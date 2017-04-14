@@ -11,14 +11,18 @@ namespace Laboratorio_3
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Ingrese el grado");
-            int degree = int.Parse(Console.ReadLine());
-            BTree<Guid, int> tree = new BTree<Guid, int>(degree);
-            
-            for (int i = 0; i < 10; i++)
+
+            for (int j = 3; j < 11; j++)
             {
-                tree.Insert(Guid.NewGuid(),i);
+                BTree<Guid, int> tree = new BTree<Guid, int>(j);
+                for (int i = 0; i < 10; i++)
+                {
+                    tree.Insert(Guid.NewGuid(), i);
+                }
             }
+
+            Console.WriteLine("good.");
+            
             Console.ReadLine();
 
         }

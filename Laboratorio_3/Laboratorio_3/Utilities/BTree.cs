@@ -41,15 +41,14 @@ namespace Laboratorio_3.Utilities
             if (!Root.HasReachedMaxEntries)
             {
                 InsertNonFull(Root, newKey, newPointer);
-
-                factory.SetNodes(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Children, Root.Entries);
-                if (Root.Entries.Count != 0)
+                if (Height == 1)
                 {
-                    factory.SetHeader(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Entries.Count, Height);
+                    //factory.SetNodes(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Children, Root.Entries);
+                    factory.SetHeader(1, 1, Root.Entries.Count, Height);
                 }
                 else
                 {
-                    factory.SetHeader(1, 1, Root.Entries.Count, Height);
+                    factory.SetHeader(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Entries.Count, Height);
                 }
                 return;
             }
@@ -61,8 +60,8 @@ namespace Laboratorio_3.Utilities
             InsertNonFull(Root, newKey, newPointer);
 
             Height++;
-            factory.SetHeader(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Entries.Count, Height);
-            factory.SetNodes(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Children, Root.Entries);
+            //factory.SetHeader(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Entries.Count, Height);
+            //factory.SetNodes(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Children, Root.Entries);
         }
         private void SplitChild(BNode<T, P> parentNode, int nodeToBeSplitIndex, BNode<T, P> nodeToBeSplit)
         {
@@ -90,16 +89,23 @@ namespace Laboratorio_3.Utilities
             // leaf node
             if (node.IsLeaf)
             {
-                //if (node.Entries.Count != 0)
-                //{
-                //    factory.SetNodes(node.Entries[0].Pointer, newPointer, node.Children, node.Entries);
-                //}
-                //else
-                //{
-                //    factory.SetNodes(newPointer, newPointer, node.Children, node.Entries);
-                //}
-
                 node.Entries.Insert(positionToInsert, new Entry<T, P>() { Key = newKey, Pointer = newPointer });
+                if (node.Entries.Count != 0)
+                {
+                    factory.SetNodes(newPointer, node.Entries[0].Pointer, node.Children, node.Entries);
+                }
+                else
+                {
+                    factory.SetNodes(newPointer, node.Entries[0].Pointer, node.Children, node.Entries);
+                }
+                if (Root.Entries.Count != 0)
+                {
+                    factory.SetHeader(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Entries.Count, Height);
+                }
+                else
+                {
+                    factory.SetHeader(1, 1, Root.Entries.Count, Height);
+                };
                 return;
             }
 
@@ -115,7 +121,7 @@ namespace Laboratorio_3.Utilities
             }
 
             InsertNonFull(node.Children[positionToInsert], newKey, newPointer);
-            factory.SetNodes(node.Entries[0].Pointer, node.Entries[0].Pointer, node.Children, node.Entries);
+            factory.SetNodes(newPointer, node.Entries[0].Pointer, node.Children, node.Entries);
         }
         #endregion
         #region Delete

@@ -42,13 +42,14 @@ namespace Laboratorio_3.Utilities
             int n = 5;
             using (StreamWriter file = new StreamWriter(path, true))
             {
-                file.WriteLine(VerifyLenght(root));
-                file.WriteLine(VerifyLenght(lastFree));
-                file.WriteLine(VerifyLenght(Degree));
-                file.WriteLine(VerifyLenght(size));
-                file.WriteLine(VerifyLenght(height));
                 if (lines.Length < 5)
                     n = 0;
+                file.WriteLine(VerifyLenght(root));
+                file.WriteLine(VerifyLenght(lastFree));
+                file.WriteLine(VerifyLenght(n));
+                file.WriteLine(VerifyLenght(Degree));
+                file.WriteLine(VerifyLenght(height));
+                
                 for (int i = n; i < lines.Length; i++)
                 {
                     file.WriteLine(lines[i]);
@@ -61,8 +62,6 @@ namespace Laboratorio_3.Utilities
         {
             if (pointer.ToString() != "0")
             {
-
-
                 double size = Math.Floor(Math.Log10(int.Parse(pointer.ToString())) + 1);
                 string asn = pointer.ToString();
                 if (size < 12)
@@ -84,7 +83,8 @@ namespace Laboratorio_3.Utilities
         public string VerifyLenght(int number)
         {
             if (number == 0)
-                number = 1;
+                return "000000000000";
+
             double size = Math.Floor(Math.Log10(int.Parse(number.ToString())) + 1);
             string asn = number.ToString();
             if (size < 12)
@@ -116,10 +116,10 @@ namespace Laboratorio_3.Utilities
 
                     for (int i = 5; i < lines.Length; i++)
                     {
-                        //if (!lines[i].Contains(VerifyLenght(instantP) + "|" + VerifyLenght(fatherP)))
-                            file.WriteLine(lines[i]);
-                       // else
-                          //  file.WriteLine(strgetNode(instantP, fatherP, children, entries));
+                        if (lines[i].Contains(VerifyLenght(instantP) + "|" + VerifyLenght(fatherP)))
+                            file.WriteLine(strgetNode(instantP, fatherP, children, entries));
+                        else
+                            file.WriteLine(lines[i]); 
                     }
                     file.WriteLine(strgetNode(instantP, fatherP, children, entries));
                 }
