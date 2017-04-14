@@ -48,6 +48,7 @@
     <Compile Include="Utilities\BNode.cs" />
     <Compile Include="Utilities\BTree.cs" />
     <Compile Include="Utilities\Entry.cs" />
+    <Compile Include="Utilities\Factory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

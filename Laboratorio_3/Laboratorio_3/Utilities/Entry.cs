@@ -14,7 +14,7 @@ namespace Laboratorio_3.Utilities
 
         public bool Equals(Entry<T, P> other)
         {
-            return this.Key.Equals(other.Key) && this.Pointer.Equals(other.Pointer);
+            return Key.Equals(other.Key) && Pointer.Equals(other.Pointer);
         }
     }
 }

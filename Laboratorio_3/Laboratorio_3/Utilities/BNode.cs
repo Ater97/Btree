@@ -13,8 +13,8 @@ namespace Laboratorio_3.Utilities
         public BNode(int degree)
         {
             this.degree = degree;
-            this.Children = new List<BNode<T, P>>(degree);
-            this.Entries = new List<Entry<T, P>>(degree);
+            Children = new List<BNode<T, P>>(degree);
+            Entries = new List<Entry<T, P>>(degree);
         }
 
         public List<BNode<T, P>> Children { get; set; }
@@ -25,7 +25,7 @@ namespace Laboratorio_3.Utilities
         {
             get
             {
-                return this.Children.Count == 0;
+                return Children.Count == 0;
             }
         }
 
@@ -33,7 +33,7 @@ namespace Laboratorio_3.Utilities
         {
             get
             {
-                return this.Entries.Count == (2 * this.degree) - 1;
+                return Entries.Count == (2 * this.degree) - 1;
             }
         }
 
@@ -41,7 +41,7 @@ namespace Laboratorio_3.Utilities
         {
             get
             {
-                return this.Entries.Count == this.degree - 1;
+                return Entries.Count == this.degree - 1;
             }
         }
     }

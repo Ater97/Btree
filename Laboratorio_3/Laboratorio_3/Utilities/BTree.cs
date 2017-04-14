@@ -20,6 +20,7 @@ namespace Laboratorio_3.Utilities
 
         public int Height { get; private set; }
 
+        public Factory factory = new Factory();
         public BTree(int degree)
         {
             if (degree < 2)
@@ -27,47 +28,60 @@ namespace Laboratorio_3.Utilities
                 throw new ArgumentException("BTree degree must be at least 2", "degree");
             }
 
-            this.Root = new BNode<T, P>(degree);
-            this.Degree = degree;
-            this.Height = 1;
+            factory.createFile(degree);
+
+            Root = new BNode<T, P>(degree);
+            Degree = degree;
+            Height = 1;
         }
 
         #region Insert
         public void Insert(T newKey, P newPointer)
         {
-            // there is space in the root node
-            if (!this.Root.HasReachedMaxEntries)
+            if (!Root.HasReachedMaxEntries)
             {
-                this.InsertNonFull(this.Root, newKey, newPointer);
+                InsertNonFull(Root, newKey, newPointer);
+
+                factory.SetNodes(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Children, Root.Entries);
+                if (Root.Entries.Count != 0)
+                {
+                    factory.SetHeader(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Entries.Count, Height);
+                }
+                else
+                {
+                    factory.SetHeader(1, 1, Root.Entries.Count, Height);
+                }
                 return;
             }
 
-            BNode<T, P> oldRoot = this.Root;
-            this.Root = new BNode<T, P>(this.Degree);
-            this.Root.Children.Add(oldRoot);
-            this.SplitChild(this.Root, 0, oldRoot);
-            this.InsertNonFull(this.Root, newKey, newPointer);
+            BNode<T, P> oldRoot = Root;
+            Root = new BNode<T, P>(Degree);
+            Root.Children.Add(oldRoot);
+            SplitChild(Root, 0, oldRoot);
+            InsertNonFull(Root, newKey, newPointer);
 
-            this.Height++;
+            Height++;
+            factory.SetHeader(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Entries.Count, Height);
+            factory.SetNodes(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Children, Root.Entries);
         }
         private void SplitChild(BNode<T, P> parentNode, int nodeToBeSplitIndex, BNode<T, P> nodeToBeSplit)
         {
-            var newNode = new BNode<T, P>(this.Degree);
+            var newNode = new BNode<T, P>(Degree);
 
-            parentNode.Entries.Insert(nodeToBeSplitIndex, nodeToBeSplit.Entries[this.Degree - 1]);
+            parentNode.Entries.Insert(nodeToBeSplitIndex, nodeToBeSplit.Entries[Degree - 1]);
             parentNode.Children.Insert(nodeToBeSplitIndex + 1, newNode);
 
-            newNode.Entries.AddRange(nodeToBeSplit.Entries.GetRange(this.Degree, this.Degree - 1));
+            newNode.Entries.AddRange(nodeToBeSplit.Entries.GetRange(Degree, Degree - 1));
 
-            // remove also Entries[this.Degree - 1], which is the one to move up to the parent
-            nodeToBeSplit.Entries.RemoveRange(this.Degree - 1, this.Degree);
+            nodeToBeSplit.Entries.RemoveRange(Degree - 1, Degree);
 
             if (!nodeToBeSplit.IsLeaf)
             {
-                newNode.Children.AddRange(nodeToBeSplit.Children.GetRange(this.Degree, this.Degree));
-                nodeToBeSplit.Children.RemoveRange(this.Degree, this.Degree);
+                newNode.Children.AddRange(nodeToBeSplit.Children.GetRange(Degree, Degree));
+                nodeToBeSplit.Children.RemoveRange(Degree, Degree);
             }
-        }
+            
+          }
 
         private void InsertNonFull(BNode<T, P> node, T newKey, P newPointer)
         {
@@ -76,6 +90,15 @@ namespace Laboratorio_3.Utilities
             // leaf node
             if (node.IsLeaf)
             {
+                //if (node.Entries.Count != 0)
+                //{
+                //    factory.SetNodes(node.Entries[0].Pointer, newPointer, node.Children, node.Entries);
+                //}
+                //else
+                //{
+                //    factory.SetNodes(newPointer, newPointer, node.Children, node.Entries);
+                //}
+
                 node.Entries.Insert(positionToInsert, new Entry<T, P>() { Key = newKey, Pointer = newPointer });
                 return;
             }
@@ -84,25 +107,26 @@ namespace Laboratorio_3.Utilities
             BNode<T, P> child = node.Children[positionToInsert];
             if (child.HasReachedMaxEntries)
             {
-                this.SplitChild(node, positionToInsert, child);
+                SplitChild(node, positionToInsert, child);
                 if (newKey.CompareTo(node.Entries[positionToInsert].Key) > 0)
                 {
                     positionToInsert++;
                 }
             }
 
-            this.InsertNonFull(node.Children[positionToInsert], newKey, newPointer);
+            InsertNonFull(node.Children[positionToInsert], newKey, newPointer);
+            factory.SetNodes(node.Entries[0].Pointer, node.Entries[0].Pointer, node.Children, node.Entries);
         }
         #endregion
         #region Delete
         public void Delete(T keyToDelete)
         {
-            this.DeleteInternal(this.Root, keyToDelete);
+            DeleteInternal(Root, keyToDelete);
 
-            if (this.Root.Entries.Count == 0 && !this.Root.IsLeaf)
+            if (Root.Entries.Count == 0 && !Root.IsLeaf)
             {
-                this.Root = this.Root.Children.Single();
-                this.Height--;
+                Root = Root.Children.Single();
+                Height--;
             }
         }
 
@@ -110,40 +134,32 @@ namespace Laboratorio_3.Utilities
         {
             int i = node.Entries.TakeWhile(entry => keyToDelete.CompareTo(entry.Key) > 0).Count();
 
-            // found key in node, so delete if from it
             if (i < node.Entries.Count && node.Entries[i].Key.CompareTo(keyToDelete) == 0)
             {
-                this.DeleteKeyFromNode(node, keyToDelete, i);
+                DeleteKeyFromNode(node, keyToDelete, i);
                 return;
             }
 
-            // delete key from subtree
             if (!node.IsLeaf)
             {
-                this.DeleteKeyFromSubtree(node, keyToDelete, i);
+                DeleteKeyFromSubtree(node, keyToDelete, i);
             }
         }
         private void DeleteKeyFromSubtree(BNode<T, P> parentNode, T keyToDelete, int subtreeIndexInNode)
         {
             BNode<T, P> childNode = parentNode.Children[subtreeIndexInNode];
 
-            // node has reached min # of entries, and removing any from it will break the btree property,
-            // so this block makes sure that the "child" has at least "degree" # of nodes by moving an 
-            // entry from a sibling node or merging nodes
             if (childNode.HasReachedMinEntries)
             {
                 int leftIndex = subtreeIndexInNode - 1;
                 BNode<T, P> leftSibling = subtreeIndexInNode > 0 ? parentNode.Children[leftIndex] : null;
 
                 int rightIndex = subtreeIndexInNode + 1;
-                BNode<T, P> rightSibling = subtreeIndexInNode < parentNode.Children.Count - 1
-                                                ? parentNode.Children[rightIndex]
-                                                : null;
+                BNode<T, P> rightSibling = subtreeIndexInNode < parentNode.Children.Count - 1 ?
+                parentNode.Children[rightIndex] : null;
 
-                if (leftSibling != null && leftSibling.Entries.Count > this.Degree - 1)
+                if (leftSibling != null && leftSibling.Entries.Count > Degree - 1)
                 {
-                    // left sibling has a node to spare, so this moves one node from left sibling 
-                    // into parent's node and one node from parent into this current node ("child")
                     childNode.Entries.Insert(0, parentNode.Entries[subtreeIndexInNode]);
                     parentNode.Entries[subtreeIndexInNode] = leftSibling.Entries.Last();
                     leftSibling.Entries.RemoveAt(leftSibling.Entries.Count - 1);
@@ -154,7 +170,7 @@ namespace Laboratorio_3.Utilities
                         leftSibling.Children.RemoveAt(leftSibling.Children.Count - 1);
                     }
                 }
-                else if (rightSibling != null && rightSibling.Entries.Count > this.Degree - 1)
+                else if (rightSibling != null && rightSibling.Entries.Count > Degree - 1)
                 {
 
                     childNode.Entries.Add(parentNode.Entries[subtreeIndexInNode]);
@@ -207,8 +223,6 @@ namespace Laboratorio_3.Utilities
 
         private void DeleteKeyFromNode(BNode<T, P> node, T keyToDelete, int keyIndexInNode)
         {
-            // if leaf, just remove it from the list of entries (we're guaranteed to have
-            // at least "degree" # of entries, to BTree property is maintained
             if (node.IsLeaf)
             {
                 node.Entries.RemoveAt(keyIndexInNode);
@@ -216,17 +230,17 @@ namespace Laboratorio_3.Utilities
             }
 
             BNode<T, P> predecessorChild = node.Children[keyIndexInNode];
-            if (predecessorChild.Entries.Count >= this.Degree)
+            if (predecessorChild.Entries.Count >= Degree)
             {
-                Entry<T, P> predecessor = this.DeletePredecessor(predecessorChild);
+                Entry<T, P> predecessor = DeletePredecessor(predecessorChild);
                 node.Entries[keyIndexInNode] = predecessor;
             }
             else
             {
                 BNode<T, P> successorChild = node.Children[keyIndexInNode + 1];
-                if (successorChild.Entries.Count >= this.Degree)
+                if (successorChild.Entries.Count >= Degree)
                 {
-                    Entry<T, P> successor = this.DeleteSuccessor(predecessorChild);
+                    Entry<T, P> successor = DeleteSuccessor(predecessorChild);
                     node.Entries[keyIndexInNode] = successor;
                 }
                 else
@@ -238,7 +252,7 @@ namespace Laboratorio_3.Utilities
                     node.Entries.RemoveAt(keyIndexInNode);
                     node.Children.RemoveAt(keyIndexInNode + 1);
 
-                    this.DeleteInternal(predecessorChild, keyToDelete);
+                    DeleteInternal(predecessorChild, keyToDelete);
                 }
             }
         }
@@ -252,7 +266,7 @@ namespace Laboratorio_3.Utilities
                 return result;
             }
 
-            return this.DeletePredecessor(node.Children.Last());
+            return DeletePredecessor(node.Children.Last());
         }
 
         private Entry<T, P> DeleteSuccessor(BNode<T, P> node)
@@ -264,13 +278,13 @@ namespace Laboratorio_3.Utilities
                 return result;
             }
 
-            return this.DeletePredecessor(node.Children.First());
+            return DeletePredecessor(node.Children.First());
         }
         #endregion
         #region Search
         public Entry<T, P> Search(T key)
         {
-            return this.SearchInternal(this.Root, key);
+            return SearchInternal(Root, key);
         }
 
         private Entry<T, P> SearchInternal(BNode<T, P> node, T key)
@@ -282,7 +296,7 @@ namespace Laboratorio_3.Utilities
                 return node.Entries[i];
             }
 
-            return node.IsLeaf ? null : this.SearchInternal(node.Children[i], key);
+            return node.IsLeaf ? null : SearchInternal(node.Children[i], key);
         }
         #endregion
     }
