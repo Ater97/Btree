@@ -17,14 +17,14 @@ namespace Prueba_Arbol_B
         {
             fabricar = new Fabrica<TLlave, T>(FileName, Grado);
             root = null;
-            this.grado = Grado;
+            grado = Grado;
         }
 
         public BTree(string FileName)
         {
             fabricar = new Fabrica<TLlave, T>(FileName);
             root = fabricar.TraerNodo(fabricar.ObtenerRaiz());
-            this.grado = fabricar.ObtenerGrado();
+            grado = fabricar.ObtenerGrado();
         }
 
         //Metodos Insertar

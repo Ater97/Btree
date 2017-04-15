@@ -18,23 +18,33 @@ namespace Prueba_Arbol_B
         private int tamaño;
         private int posicionLibre;
         private string dataNull;
+        string direccion;
+
+        public void crearFolder()
+        {
+            // direccion = @"C:\Users\sebas\Desktop\BTree tests\";
+            direccion = @"Archivo\";
+            Directory.CreateDirectory(direccion);
+            direccion = Path.Combine(direccion, nombreArchivo);
+        }
 
         public Fabrica(string NombreArchivo, int Grado)
         {
-            this.nombreArchivo = NombreArchivo;
-            this.grado = Grado;
-            this.altura = 0;
-            this.tamaño = 0;
-            this.posicionLibre = 0;
-            this.path = @"Archivo\" + nombreArchivo;
+            nombreArchivo = NombreArchivo;
+            crearFolder();
+            grado = Grado;
+            altura = 0;
+            tamaño = 0;
+            posicionLibre = 0;
+            path = direccion + nombreArchivo;
             GenerarArbol();
         }
 
         public Fabrica(string NombreArchivo)
         {
-            this.nombreArchivo = NombreArchivo;
-            this.path = @"Archivo\" + nombreArchivo;
-            this.dataNull = "####################################";
+            nombreArchivo = NombreArchivo;
+            path = direccion + nombreArchivo;
+            dataNull = "####################################"; 
             CargarEncabezado();
         }
 
@@ -44,19 +54,19 @@ namespace Prueba_Arbol_B
 
             stream.Seek(13, SeekOrigin.Begin);
             StreamReader reader = new StreamReader(stream);
-            this.posicionLibre = int.Parse(reader.ReadLine());
+            posicionLibre = int.Parse(reader.ReadLine());
 
             stream.Seek(26, SeekOrigin.Begin);
             reader = new StreamReader(stream);
-            this.tamaño = int.Parse(reader.ReadLine());
+            tamaño = int.Parse(reader.ReadLine());
 
             stream.Seek(39, SeekOrigin.Begin);
             reader = new StreamReader(stream);
-            this.grado = int.Parse(reader.ReadLine());
+            grado = int.Parse(reader.ReadLine());
 
             stream.Seek(52, SeekOrigin.Begin);
             reader = new StreamReader(stream);
-            this.altura = int.Parse(reader.ReadLine());
+            altura = int.Parse(reader.ReadLine());
 
             stream.Close();
             reader.Close();

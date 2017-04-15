@@ -10,3 +10,9 @@ C:\Users\sebas\Desktop\Prueba Arbol B\Prueba Arbol B\Prueba Arbol B\obj\Debug\Pr
 C:\Users\sebas\Desktop\Prueba Arbol B\Prueba Arbol B\Prueba Arbol B\bin\Debug\Prueba Arbol B.exe
 C:\Users\sebas\Desktop\Prueba Arbol B\Prueba Arbol B\Prueba Arbol B\bin\Debug\Prueba Arbol B.pdb
 C:\Users\sebas\Desktop\Prueba Arbol B\Prueba Arbol B\Prueba Arbol B\obj\Debug\Prueba Arbol B.csprojResolveAssemblyReference.cache
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B memoria secundaria\Prueba Arbol B\Prueba Arbol B\Prueba Arbol B\bin\Debug\Prueba Arbol B.exe.config
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B memoria secundaria\Prueba Arbol B\Prueba Arbol B\Prueba Arbol B\obj\Debug\Prueba Arbol B.exe
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B memoria secundaria\Prueba Arbol B\Prueba Arbol B\Prueba Arbol B\obj\Debug\Prueba Arbol B.pdb
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B memoria secundaria\Prueba Arbol B\Prueba Arbol B\Prueba Arbol B\bin\Debug\Prueba Arbol B.exe
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B memoria secundaria\Prueba Arbol B\Prueba Arbol B\Prueba Arbol B\bin\Debug\Prueba Arbol B.pdb
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B memoria secundaria\Prueba Arbol B\Prueba Arbol B\Prueba Arbol B\obj\Debug\Prueba Arbol B.csprojResolveAssemblyReference.cache

@@ -16,7 +16,8 @@ namespace Laboratorio_3.Utilities
 
         public bool createFile(int degre)
         {
-            path = @"C:\Users\sebas\Desktop\BTree tests";
+            //path = @"C:\Users\sebas\Desktop\BTree tests";
+            path = @"Archivo\";
             Directory.CreateDirectory(path);
             string fileName = "Example_degre" + degre.ToString() + ".txt";
             path = Path.Combine(path, fileName);

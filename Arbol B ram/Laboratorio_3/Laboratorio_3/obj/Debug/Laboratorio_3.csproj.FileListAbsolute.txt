@@ -4,3 +4,9 @@ C:\Users\sebas\Documents\GitHub\Laboratorio-3\Laboratorio_3\Laboratorio_3\bin\De
 C:\Users\sebas\Documents\GitHub\Laboratorio-3\Laboratorio_3\Laboratorio_3\obj\Debug\Laboratorio_3.csprojResolveAssemblyReference.cache
 C:\Users\sebas\Documents\GitHub\Laboratorio-3\Laboratorio_3\Laboratorio_3\obj\Debug\Laboratorio_3.exe
 C:\Users\sebas\Documents\GitHub\Laboratorio-3\Laboratorio_3\Laboratorio_3\obj\Debug\Laboratorio_3.pdb
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B ram\Laboratorio_3\Laboratorio_3\bin\Debug\Laboratorio_3.exe.config
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B ram\Laboratorio_3\Laboratorio_3\obj\Debug\Laboratorio_3.exe
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B ram\Laboratorio_3\Laboratorio_3\obj\Debug\Laboratorio_3.pdb
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B ram\Laboratorio_3\Laboratorio_3\bin\Debug\Laboratorio_3.exe
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B ram\Laboratorio_3\Laboratorio_3\bin\Debug\Laboratorio_3.pdb
+C:\Users\sebas\Documents\GitHub\Laboratorio-3\Arbol B ram\Laboratorio_3\Laboratorio_3\obj\Debug\Laboratorio_3.csprojResolveAssemblyReference.cache
