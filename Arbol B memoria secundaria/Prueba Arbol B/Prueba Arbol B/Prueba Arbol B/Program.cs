@@ -13,26 +13,24 @@ namespace Prueba_Arbol_B
         static void Main(string[] args)
         {
             Stopwatch sw = new Stopwatch();
-           
             List<Guid> registros = new List<Guid>();
             BTree<string, Guid> arbol = null;
             Guid guid;
             int orden;
-
             Console.WriteLine("Se empezo la inserción.");
-            for (int j = 5; j<11; j++)
+            for (int j = 10; j<11; j++)
             {
                 sw.Start();
                 orden = j;
 
                 arbol = new BTree<string, Guid>("ArbolB-" + orden.ToString() + ".txt", orden);
 
-                for (int i = 0; i < 10000; i++)
+                for (int i = 0; i < 100; i++)
                 {
                     guid = Guid.NewGuid();
                     arbol.Insertar(guid.ToString(), guid);
 
-                    if (i == 2500)
+                    if (i == 6)
                     {
                         registros.Add(guid);
                     }
@@ -43,11 +41,9 @@ namespace Prueba_Arbol_B
                 TimeSpan elapsedTime = sw.Elapsed;
                 sw.Reset();
                 Console.WriteLine("Time" + elapsedTime);
+
+               arbol.Eliminar(registros[0].ToString());
             }
-
-
-
-
             Console.ReadKey();
 
             Console.WriteLine("Inicia busqueda");

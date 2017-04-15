@@ -48,7 +48,7 @@ namespace Prueba_Arbol_B
             }
             else
             {
-                //Cuando lo que estoy insertando no es la raiz :s    
+                //Cuando no se incerta en la raiz   
                 Insertando(key, dato);
 
                 //Modificar tamaño
@@ -510,7 +510,15 @@ namespace Prueba_Arbol_B
             }
             else
             {
-                EliminarInterno(root, key);
+                int raiz = fabricar.ObtenerRaiz();
+                BNode<TLlave, T> nodo = fabricar.TraerNodo(raiz);
+                EliminarInterno(nodo, key);
+
+                //γθμπλεταρ
+                if (nodo.Datos.Count() == 0 && !EsHoja(nodo.Hijos))
+                {
+
+                }
                 return true;
             }
         }
@@ -526,18 +534,30 @@ namespace Prueba_Arbol_B
             }
             if (!EsHoja(node.Hijos))
             {
-                // DeleteKeyFromSubtree(node, keyToDelete, i);
+                EliminarLlavedeSubarbol(node, keyToDelete, i);
             }
         }
         private void EliminarLlaveNodo(BNode<TLlave, T> node, TLlave keyToDelete, int keyIndexInNode)
         {
             if (EsHoja(node.Hijos))
             {
-                string numToRemove = node.Datos[keyIndexInNode];
-                node.Datos = node.Datos.Where(val => val != numToRemove).ToArray();
+                string ItemToRemove = node.Datos[keyIndexInNode];
+                node.Datos = node.Datos.Where(val => val != ItemToRemove).ToArray();
+                node.Llaves = node.Llaves.Where(val => val != ItemToRemove).ToArray();
+                fabricar.GuardarNodo(node.Informacion());
+                int tamanio = fabricar.ObtenerTamaño();
+                tamanio--;
+                fabricar.CambiarTamaño(tamanio);
                 return;
             }
+
+            //γθμπλεταρ
             //   BNode<TLlave, T> predecessorChild = keyIndexInNode
+
+        }
+
+        private void EliminarLlavedeSubarbol(BNode<TLlave, T> parentNode, TLlave keyToDelete, int subtreeIndexInNode)
+        {
 
         }
         #endregion

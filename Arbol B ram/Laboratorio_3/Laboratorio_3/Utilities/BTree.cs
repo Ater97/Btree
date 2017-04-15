@@ -199,7 +199,7 @@ namespace Laboratorio_3.Utilities
                 }
             }
 
-            this.DeleteInternal(childNode, keyToDelete);
+            DeleteInternal(childNode, keyToDelete);
         }
 
         private void DeleteKeyFromNode(BNode<T, P> node, T keyToDelete, int keyIndexInNode)
