@@ -121,7 +121,6 @@ namespace Prueba_Arbol_B
                 Datos[x] = informacion[recorrido + grado + 1];
                 recorrido++;
             }
-
         }
 
         public string[] Informacion()
@@ -140,7 +139,6 @@ namespace Prueba_Arbol_B
             {
                 nodo.Add(padre.ToString("D11"));
             }
-            
 
             //Son necesarios para identificar los separadores
             nodo.Add("");

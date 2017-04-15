@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Prueba_Arbol_B
 {
@@ -11,6 +12,8 @@ namespace Prueba_Arbol_B
     {
         static void Main(string[] args)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             List<Guid> registros = new List<Guid>();
             BTree<string, Guid> arbol = null;
 
@@ -37,7 +40,9 @@ namespace Prueba_Arbol_B
                 Console.WriteLine("Se ha terminado la inserción del árbol de orden " + orden.ToString());
                 orden++;
             }
-
+            sw.Stop();
+            TimeSpan elapsedTime = sw.Elapsed;
+            Console.WriteLine("Time" + elapsedTime);
 
             Console.ReadKey();
 

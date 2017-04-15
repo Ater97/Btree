@@ -26,7 +26,7 @@ namespace Prueba_Arbol_B
             root = fabricar.TraerNodo(fabricar.ObtenerRaiz());
             grado = fabricar.ObtenerGrado();
         }
-
+        #region Insertar
         //Metodos Insertar
         public void Insertar(TLlave key, T dato)
         {                 
@@ -381,7 +381,7 @@ namespace Prueba_Arbol_B
             }
             while (!salir);
         }
-
+        #endregion
 
         //Metodos de Busqueda
 
@@ -427,7 +427,7 @@ namespace Prueba_Arbol_B
                     return true;
                 }
             }
-
+ 
             return false;
         }
 
@@ -442,7 +442,6 @@ namespace Prueba_Arbol_B
                     espacios++;
                 }
             }
-
             return espacios;
         }
 
@@ -474,14 +473,12 @@ namespace Prueba_Arbol_B
                     return false;
                 }
             }
-
             return true;
         }
 
         private int ADondeIr(string[] nodo, TLlave key) 
         {
             //El arreglo que se recibe es el arreglo de llaves.
-
             int hijo = grado - 1;
 
             for(int i = 0; i < grado -1; i++)
@@ -500,11 +497,49 @@ namespace Prueba_Arbol_B
                     return hijo;
                 }
             }
-
             return hijo;
         }
 
 
+        #region Eliminar
+        public bool Eliminar(TLlave key, T dato)
+        {
+            if (fabricar.Empty())
+            {
+                return false;
+            }
+            else
+            {
 
+                return true;
+            }
+        }
+
+        private void EliminarInterno(BNode<TLlave, T> node, T keyToDelete)
+        {
+            int i = node.Llaves.TakeWhile(entry => keyToDelete.CompareTo(keyToDelete) > 0).Count();
+
+            if (i < node.Llaves.Count() && node.Llaves[i].CompareTo(keyToDelete) == 0)
+            {
+                EliminarLlaveNodo(node, keyToDelete, i);
+                return;
+            }
+            if (!EsHoja(node.Hijos))
+            {
+                // DeleteKeyFromSubtree(node, keyToDelete, i);
+            }
+        }
+        private void EliminarLlaveNodo(BNode<TLlave, T> node, T keyToDelete, int keyIndexInNode)
+        {
+            if (EsHoja(node.Hijos))
+            {
+                string numToRemove = node.Datos[keyIndexInNode];
+                node.Datos = node.Datos.Where(val => val != numToRemove).ToArray();
+                return;
+            }
+            //   BNode<TLlave, T> predecessorChild = keyIndexInNode
+
+        }
+        #endregion
     }
 }
