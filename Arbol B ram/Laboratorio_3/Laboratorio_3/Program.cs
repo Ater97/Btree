@@ -13,17 +13,28 @@ namespace Laboratorio_3
        
         static void Main(string[] args)
         {
-            for (int j = 3; j < 11; j++)
+            //for (int j = 3; j < 11; j++)
+            //{
+            //    BTree<Guid, int> tree = new BTree<Guid, int>(j);
+            //    //1000000
+            //    for (int i = 0; i < 10; i++)
+            //    {
+            //        tree.Insert(Guid.NewGuid(), i);
+            //    }
+            //}
+            Guid guid = Guid.NewGuid();
+            BTree<Guid, int> tree = new BTree<Guid, int>(4);
+            for (int i = 0; i < 10; i++)
             {
-                BTree<Guid, int> tree = new BTree<Guid, int>(j);
-                //1000000
-                for (int i = 0; i < 10; i++)
+                Guid nguid = Guid.NewGuid();
+                if (i==5)
                 {
-                    tree.Insert(Guid.NewGuid(), i);
+                    guid = nguid;
                 }
+                tree.Insert(nguid, i);
             }
-            
-            Console.WriteLine("good.");
+            tree.Delete(guid);
+        Console.WriteLine("good.");
             Console.ReadLine();
 
         }

@@ -502,7 +502,7 @@ namespace Prueba_Arbol_B
 
 
         #region Eliminar
-        public bool Eliminar(TLlave key, T dato)
+        public bool Eliminar(TLlave key)
         {
             if (fabricar.Empty())
             {
@@ -510,14 +510,14 @@ namespace Prueba_Arbol_B
             }
             else
             {
-
+                EliminarInterno(root, key);
                 return true;
             }
         }
 
-        private void EliminarInterno(BNode<TLlave, T> node, T keyToDelete)
+        private void EliminarInterno(BNode<TLlave, T> node, TLlave keyToDelete)
         {
-            int i = node.Llaves.TakeWhile(entry => keyToDelete.CompareTo(keyToDelete) > 0).Count();
+            int i = Array.IndexOf(node.Llaves, keyToDelete.ToString());
 
             if (i < node.Llaves.Count() && node.Llaves[i].CompareTo(keyToDelete) == 0)
             {
@@ -529,7 +529,7 @@ namespace Prueba_Arbol_B
                 // DeleteKeyFromSubtree(node, keyToDelete, i);
             }
         }
-        private void EliminarLlaveNodo(BNode<TLlave, T> node, T keyToDelete, int keyIndexInNode)
+        private void EliminarLlaveNodo(BNode<TLlave, T> node, TLlave keyToDelete, int keyIndexInNode)
         {
             if (EsHoja(node.Hijos))
             {

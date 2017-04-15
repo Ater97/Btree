@@ -13,17 +13,18 @@ namespace Prueba_Arbol_B
         static void Main(string[] args)
         {
             Stopwatch sw = new Stopwatch();
-            sw.Start();
+           
             List<Guid> registros = new List<Guid>();
             BTree<string, Guid> arbol = null;
+            Guid guid;
+            int orden;
 
             Console.WriteLine("Se empezo la inserción.");
-
-            int orden = 10;
-            Guid guid;
-
-            while (orden < 11)
+            for (int j = 5; j<11; j++)
             {
+                sw.Start();
+                orden = j;
+
                 arbol = new BTree<string, Guid>("ArbolB-" + orden.ToString() + ".txt", orden);
 
                 for (int i = 0; i < 10000; i++)
@@ -38,11 +39,14 @@ namespace Prueba_Arbol_B
                 }
 
                 Console.WriteLine("Se ha terminado la inserción del árbol de orden " + orden.ToString());
-                orden++;
+                sw.Stop();
+                TimeSpan elapsedTime = sw.Elapsed;
+                sw.Reset();
+                Console.WriteLine("Time" + elapsedTime);
             }
-            sw.Stop();
-            TimeSpan elapsedTime = sw.Elapsed;
-            Console.WriteLine("Time" + elapsedTime);
+
+
+
 
             Console.ReadKey();
 
