@@ -9,20 +9,23 @@ namespace Laboratorio_3
 {
     class Program
     {
+        //𐤁𐤀𐤋  
+       
         static void Main(string[] args)
         {
 
             for (int j = 3; j < 11; j++)
             {
                 BTree<Guid, int> tree = new BTree<Guid, int>(j);
-                for (int i = 0; i < 10; i++)
+                //1000000
+                for (int i = 0; i < 1000; i++)
                 {
                     tree.Insert(Guid.NewGuid(), i);
+                    Console.WriteLine(i);
                 }
             }
-
-            Console.WriteLine("good.");
             
+            Console.WriteLine("good.");
             Console.ReadLine();
 
         }

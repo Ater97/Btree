@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,15 +43,7 @@ namespace Laboratorio_3.Utilities
             if (!Root.HasReachedMaxEntries)
             {
                 InsertNonFull(Root, newKey, newPointer);
-                if (Height == 1)
-                {
-                    //factory.SetNodes(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Children, Root.Entries);
-                    factory.SetHeader(1, 1, Root.Entries.Count, Height);
-                }
-                else
-                {
-                    factory.SetHeader(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Entries.Count, Height);
-                }
+                factory.SetHeader(Root.Entries.First().Pointer, newPointer, Root.Entries.Count, Height);
                 return;
             }
 
@@ -60,8 +54,6 @@ namespace Laboratorio_3.Utilities
             InsertNonFull(Root, newKey, newPointer);
 
             Height++;
-            //factory.SetHeader(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Entries.Count, Height);
-            //factory.SetNodes(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Children, Root.Entries);
         }
         private void SplitChild(BNode<T, P> parentNode, int nodeToBeSplitIndex, BNode<T, P> nodeToBeSplit)
         {
@@ -79,33 +71,16 @@ namespace Laboratorio_3.Utilities
                 newNode.Children.AddRange(nodeToBeSplit.Children.GetRange(Degree, Degree));
                 nodeToBeSplit.Children.RemoveRange(Degree, Degree);
             }
-            
-          }
+        }
 
         private void InsertNonFull(BNode<T, P> node, T newKey, P newPointer)
         {
             int positionToInsert = node.Entries.TakeWhile(entry => newKey.CompareTo(entry.Key) >= 0).Count();
 
-            // leaf node
             if (node.IsLeaf)
             {
                 node.Entries.Insert(positionToInsert, new Entry<T, P>() { Key = newKey, Pointer = newPointer });
-                if (node.Entries.Count != 0)
-                {
-                    factory.SetNodes(newPointer, node.Entries[0].Pointer, node.Children, node.Entries);
-                }
-                else
-                {
-                    factory.SetNodes(newPointer, node.Entries[0].Pointer, node.Children, node.Entries);
-                }
-                if (Root.Entries.Count != 0)
-                {
-                    factory.SetHeader(Root.Entries[0].Pointer, Root.Entries[0].Pointer, Root.Entries.Count, Height);
-                }
-                else
-                {
-                    factory.SetHeader(1, 1, Root.Entries.Count, Height);
-                };
+                //factory.SetNodes(newPointer, newPointer, node.Children, node.Entries);
                 return;
             }
 
@@ -121,7 +96,7 @@ namespace Laboratorio_3.Utilities
             }
 
             InsertNonFull(node.Children[positionToInsert], newKey, newPointer);
-            factory.SetNodes(newPointer, node.Entries[0].Pointer, node.Children, node.Entries);
+           
         }
         #endregion
         #region Delete
@@ -305,5 +280,15 @@ namespace Laboratorio_3.Utilities
             return node.IsLeaf ? null : SearchInternal(node.Children[i], key);
         }
         #endregion
+        
+        //public void SaveTree(BTree<T, P> tree, string filename)
+        //{
+        //    using (Stream file = File.Open(filename, FileMode.Create))
+        //    {
+        //        BinaryFormatter bf = new BinaryFormatter();
+        //        bf.Serialize(file, tree.BNodes.Cast<BNode<T, P>>().ToList());
+        //    }
+        //}
+
     }
 }

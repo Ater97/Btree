@@ -33,7 +33,7 @@ namespace Laboratorio_3.Utilities
         {
             get
             {
-                return Entries.Count == (2 * this.degree) - 1;
+                return Entries.Count == (2 * degree) - 1;
             }
         }
 
@@ -41,7 +41,7 @@ namespace Laboratorio_3.Utilities
         {
             get
             {
-                return Entries.Count == this.degree - 1;
+                return Entries.Count == degree - 1;
             }
         }
     }

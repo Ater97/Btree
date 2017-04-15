@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Laboratorio_3.Utilities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,6 +36,7 @@ namespace Laboratorio_3.Utilities
             }
             return false;
         }
+        
 
         public bool SetHeader<P>(P root, P lastFree, int size, int height)
         {
@@ -100,6 +103,22 @@ namespace Laboratorio_3.Utilities
                 return asn;
             }
         }
+        public string strgetNode<T, P>(P instantP, P fatherP, List<BNode<T, P>> children, List<Entry<T, P>> entries)
+        {
+            string strChildren = "";
+            string strEntries = "";
+            for (int i = 0; i < children.Count; i++)
+            {
+                strChildren = strChildren + "|" + children.First().Entries[i].Pointer;
+            }
+            for (int i = 0; i < entries.Count; i++)
+            {
+                strEntries = strEntries + "|" + entries.First().Key;
+                entries.Remove(entries.First());
+            }
+            return (VerifyLenght(instantP) + "|" + VerifyLenght(fatherP) + "||" + strChildren + "||" + strEntries);
+        }
+
         #endregion
         public bool SetNodes<T, P>(P instantP, P fatherP, List<BNode<T, P>> children, List<Entry<T, P>> entries)
         {
@@ -109,17 +128,18 @@ namespace Laboratorio_3.Utilities
             {
                 if (lines.Length != 0)
                 {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        file.WriteLine(lines[i]);
-                    }
+                    if (lines.Count() >= 5)
+                        for (int i = 0; i < 5; i++)
+                        {
+                            file.WriteLine(lines[i]);
+                        }
 
                     for (int i = 5; i < lines.Length; i++)
                     {
                         if (lines[i].Contains(VerifyLenght(instantP) + "|" + VerifyLenght(fatherP)))
                             file.WriteLine(strgetNode(instantP, fatherP, children, entries));
                         else
-                            file.WriteLine(lines[i]); 
+                            file.WriteLine(lines[i]);
                     }
                     file.WriteLine(strgetNode(instantP, fatherP, children, entries));
                 }
@@ -129,22 +149,6 @@ namespace Laboratorio_3.Utilities
             }
             return true;
         }
-        public string strgetNode<T, P>(P instantP, P fatherP, List<BNode<T, P>> children, List<Entry<T, P>> entries)
-        {
-            string strChildren = "";
-            string strEntries = "";
-            for (int i = 0; i < children.Count; i++)
-            {
-                strChildren = strChildren + "|" + children.First().Entries.First().Pointer;
-                children.Remove(children.First());
-            }
-            for (int i = 0; i < entries.Count; i++)
-            {
-                strEntries = strEntries + "|" + entries.First().Key;
-                entries.Remove(entries.First());
-            }
-            return (VerifyLenght(instantP) + "|" + VerifyLenght(fatherP)+ "||" + strChildren + "||" + strEntries);
-        }
-
+       
     }
 }
