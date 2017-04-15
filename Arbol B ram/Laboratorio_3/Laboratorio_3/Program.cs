@@ -18,10 +18,10 @@ namespace Laboratorio_3
             {
                 BTree<Guid, int> tree = new BTree<Guid, int>(j);
                 //1000000
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 1000000; i++)
                 {
                     tree.Insert(Guid.NewGuid(), i);
-                    Console.WriteLine(i);
+                  //  Console.WriteLine(i);
                 }
             }
             
