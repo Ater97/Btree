@@ -514,7 +514,7 @@ namespace Prueba_Arbol_B
                 BNode<TLlave, T> nodo = fabricar.TraerNodo(raiz);
                 EliminarInterno(nodo, key);
 
-                //γθμπλεταρ
+                //βετα
                 if (nodo.Datos.Count() == 0 && !EsHoja(nodo.Hijos))
                 {
                     int altura = fabricar.ObtenerAltura();
@@ -527,6 +527,7 @@ namespace Prueba_Arbol_B
 
         private int aDondeir(string[] llaves, TLlave key, int casilla)
         {
+            //τερμιναδο
             if (llaves.Count() == casilla)
             {
                 return casilla - 1;
@@ -541,6 +542,7 @@ namespace Prueba_Arbol_B
 
         private void EliminarInterno(BNode<TLlave, T> node, TLlave keyToDelete)
         {
+            //τερμιναδο
             int i = Array.IndexOf(node.Llaves, keyToDelete.ToString());
             if (i < 0)
             {
@@ -559,6 +561,7 @@ namespace Prueba_Arbol_B
 
         private void EliminarLlaveNodo(BNode<TLlave, T> node, TLlave keyToDelete, int keyIndexInNode)
         {
+            //τερμιναδο
             if (EsHoja(node.Hijos))
             {
                 if ((node.Datos.Count() >1))
@@ -574,15 +577,16 @@ namespace Prueba_Arbol_B
                     fabricar.CambiarTamaño(tamanio);
                     return;
                 }
-                //γθμπλεταρ
+
                 //Eliminar nodo completamente
+                //γθμπλεταρ
             }
             //γθμπλεταρ
             BNode<TLlave, T> predecessorChild = fabricar.TraerNodo(keyIndexInNode);
 
             if (predecessorChild.Datos.Count() >= grado)
             {
-             //  BNode<TLlave, T> predecessor = DeletePredecessor(predecessorChild);
+            //   BNode<TLlave, T> predecessor = DeletePredecessor(predecessorChild);
                 
             }
         }
@@ -596,19 +600,88 @@ namespace Prueba_Arbol_B
         //        node.Datos = node.Datos.Where(val => val != ItemToRemove).ToArray();
         //        node.Llaves = node.Llaves.Where(val => val != ItemToRemove).ToArray();
         //        //fabricar.GuardarNodo(node.Informacion());
-
         //    }
-
         //}
 
         private void EliminarLlavedeSubarbol(BNode<TLlave, T> parentNode, TLlave keyToDelete, int subtreeIndexInNode)
         {
-            
+            //τερμιναδο
             BNode<TLlave, T> childNode = fabricar.TraerNodo(int.Parse(parentNode.Hijos[subtreeIndexInNode]));
 
-            if (!(childNode.Datos.Count() < fabricar.ObtenerGrado()))
+            if ((childNode.Datos.Count() > 0))
             {
+                int leftIndex = subtreeIndexInNode - 1;
+                int rightIndex = subtreeIndexInNode + 1;
+
+                BNode<TLlave, T> leftSibling = subtreeIndexInNode > 0 ?
+                    fabricar.TraerNodo(int.Parse(parentNode.Hijos[leftIndex])) : null;
+                BNode<TLlave, T> rightSibling = subtreeIndexInNode < parentNode.Hijos.Count() - 1 ?
+                    fabricar.TraerNodo(int.Parse(parentNode.Hijos[rightIndex])) : null;
+
                 //γθμπλεταρ
+                if (leftSibling != null && leftSibling.Datos.Count() > fabricar.ObtenerGrado() - 1)
+                {
+                    
+                    //βετα
+                    List<string> lst = childNode.Datos.OfType<string>().ToList();
+                    lst.Insert(0, parentNode.Datos[subtreeIndexInNode]);
+                    childNode.Datos = lst.ToArray();
+                    parentNode.Datos[subtreeIndexInNode] = leftSibling.Datos.Last();
+
+                    string KeyToRemove = leftSibling.Llaves[leftSibling.Datos.Count() - 1];
+                    string ItemToRemove = leftSibling.Datos[leftSibling.Datos.Count() - 1];
+                    leftSibling.Datos = leftSibling.Datos.Where(val => val != ItemToRemove).ToArray();
+                    leftSibling.Llaves = leftSibling.Llaves.Where(val => val != KeyToRemove).ToArray();
+                    fabricar.GuardarNodo(leftSibling.Informacion());
+
+                    if (!EsHoja(leftSibling.Hijos))
+                    {
+                        //βετα
+                        lst = childNode.Datos.OfType<string>().ToList();
+                        lst.Insert(0, leftSibling.Hijos.Last());
+                        childNode.Datos = lst.ToArray();
+
+                        KeyToRemove = leftSibling.Llaves[leftSibling.Hijos.Count() - 1];
+                        leftSibling.Llaves = leftSibling.Llaves.Where(val => val != KeyToRemove).ToArray();
+                        fabricar.GuardarNodo(leftSibling.Informacion());
+                    }
+                }
+                else if(rightSibling != null && rightSibling.Datos.Count() > fabricar.ObtenerGrado() - 1)
+                {
+                    //βετα
+                    childNode.Hijos[childNode.Hijos.Count()] = (parentNode.Hijos[subtreeIndexInNode]);
+                    parentNode.Datos[subtreeIndexInNode] = rightSibling.Datos.First();
+
+                    string ItemToRemove = rightSibling.Datos[0];
+                    rightSibling.Datos = rightSibling.Datos.Where(val => val != ItemToRemove).ToArray();
+                    fabricar.GuardarNodo(rightSibling.Informacion());
+
+                    if (!EsHoja(rightSibling.Hijos))
+                    {
+                        List<string> lst = childNode.Hijos.OfType<string>().ToList();
+                        lst.Insert(0, rightSibling.Hijos.Last());
+                        childNode.Hijos = lst.ToArray();
+
+                        ItemToRemove = rightSibling.Datos[0];
+                        rightSibling.Hijos = rightSibling.Hijos.Where(val => val != ItemToRemove).ToArray();
+                        fabricar.GuardarNodo(rightSibling.Informacion());
+                    }
+                }
+                else
+                { 
+                    //βετα
+                    if (leftSibling != null)
+                    {
+                        List<string> lst = childNode.Datos.OfType<string>().ToList();
+                        lst.Insert(0, parentNode.Datos[subtreeIndexInNode]);
+                        childNode.Datos = lst.ToArray();
+                        var oldEntries = childNode.Datos;
+                        childNode.Datos = leftSibling.Datos;
+
+                    }
+                }
+
+
 
             }
             EliminarInterno(childNode, keyToDelete);

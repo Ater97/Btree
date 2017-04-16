@@ -136,8 +136,7 @@ namespace Laboratorio_3.Utilities
                 BNode<T, P> leftSibling = subtreeIndexInNode > 0 ? parentNode.Children[leftIndex] : null;
 
                 int rightIndex = subtreeIndexInNode + 1;
-                BNode<T, P> rightSibling = subtreeIndexInNode < parentNode.Children.Count - 1 ?
-                parentNode.Children[rightIndex] : null;
+                BNode<T, P> rightSibling = subtreeIndexInNode < parentNode.Children.Count - 1 ? parentNode.Children[rightIndex] : null;
 
                 if (leftSibling != null && leftSibling.Entries.Count > Degree - 1)
                 {
@@ -172,6 +171,7 @@ namespace Laboratorio_3.Utilities
                         childNode.Entries.Insert(0, parentNode.Entries[subtreeIndexInNode]);
                         var oldEntries = childNode.Entries;
                         childNode.Entries = leftSibling.Entries;
+                        /////
                         childNode.Entries.AddRange(oldEntries);
                         if (!leftSibling.IsLeaf)
                         {
