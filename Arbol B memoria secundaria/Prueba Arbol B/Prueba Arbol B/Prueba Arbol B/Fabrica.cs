@@ -317,10 +317,5 @@ namespace Prueba_Arbol_B
 
             return gradoArbol;
         }
-
-        public void EliminardeHoja(string[] nodo, TLlave LlaveAEliminar)
-        {
-
-        }
     }
 }

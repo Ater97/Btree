@@ -30,7 +30,7 @@ namespace Laboratorio_3.Utilities
                 throw new ArgumentException("BTree degree must be at least 2", "degree");
             }
 
-            factory.createFile(degree);
+           // factory.createFile(degree);
 
             Root = new BNode<T, P>(degree);
             Degree = degree;
@@ -43,7 +43,7 @@ namespace Laboratorio_3.Utilities
             if (!Root.HasReachedMaxEntries)
             {
                 InsertNonFull(Root, newKey, newPointer);
-                factory.SetHeader(Root.Entries.First().Pointer, newPointer, Root.Entries.Count, Height);
+            //    factory.SetHeader(Root.Entries.First().Pointer, newPointer, Root.Entries.Count, Height);
                 return;
             }
 

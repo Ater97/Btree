@@ -25,12 +25,12 @@ namespace Prueba_Arbol_B
 
                 arbol = new BTree<string, Guid>("ArbolB-" + orden.ToString() + ".txt", orden);
 
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     guid = Guid.NewGuid();
                     arbol.Insertar(guid.ToString(), guid);
 
-                    if (i == 6)
+                    if (i == 5)
                     {
                         registros.Add(guid);
                     }

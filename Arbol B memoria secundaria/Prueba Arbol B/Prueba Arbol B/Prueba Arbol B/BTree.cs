@@ -517,16 +517,35 @@ namespace Prueba_Arbol_B
                 //γθμπλεταρ
                 if (nodo.Datos.Count() == 0 && !EsHoja(nodo.Hijos))
                 {
-
+                    int altura = fabricar.ObtenerAltura();
+                    altura--;
+                    fabricar.CambiarAltura(altura);
                 }
                 return true;
             }
         }
 
+        private int aDondeir(string[] llaves, TLlave key, int casilla)
+        {
+            if (llaves.Count() == casilla)
+            {
+                return casilla - 1;
+            }
+            if (llaves[casilla].CompareTo(key) < 0)
+            {
+                return aDondeir(llaves, key, casilla + 1);
+            }
+            else
+                return casilla;
+        }
+
         private void EliminarInterno(BNode<TLlave, T> node, TLlave keyToDelete)
         {
             int i = Array.IndexOf(node.Llaves, keyToDelete.ToString());
-
+            if (i < 0)
+            {
+             i = aDondeir(node.Llaves, keyToDelete, 0);
+            }
             if (i < node.Llaves.Count() && node.Llaves[i].CompareTo(keyToDelete) == 0)
             {
                 EliminarLlaveNodo(node, keyToDelete, i);
@@ -537,28 +556,62 @@ namespace Prueba_Arbol_B
                 EliminarLlavedeSubarbol(node, keyToDelete, i);
             }
         }
+
         private void EliminarLlaveNodo(BNode<TLlave, T> node, TLlave keyToDelete, int keyIndexInNode)
         {
             if (EsHoja(node.Hijos))
             {
-                string ItemToRemove = node.Datos[keyIndexInNode];
-                node.Datos = node.Datos.Where(val => val != ItemToRemove).ToArray();
-                node.Llaves = node.Llaves.Where(val => val != ItemToRemove).ToArray();
-                fabricar.GuardarNodo(node.Informacion());
-                int tamanio = fabricar.ObtenerTamaño();
-                tamanio--;
-                fabricar.CambiarTamaño(tamanio);
-                return;
+                if ((node.Datos.Count() >1))
+                {
+                    string KeyToRemove = node.Llaves[keyIndexInNode];
+                    string ItemToRemove = node.Datos[keyIndexInNode];
+                    node.Datos = node.Datos.Where(val => val != ItemToRemove).ToArray();
+                    node.Llaves = node.Llaves.Where(val => val != KeyToRemove).ToArray();
+                    fabricar.GuardarNodo(node.Informacion());
+
+                    int tamanio = fabricar.ObtenerTamaño();
+                    tamanio--;
+                    fabricar.CambiarTamaño(tamanio);
+                    return;
+                }
+                //γθμπλεταρ
+                //Eliminar nodo completamente
             }
-
             //γθμπλεταρ
-            //   BNode<TLlave, T> predecessorChild = keyIndexInNode
+            BNode<TLlave, T> predecessorChild = fabricar.TraerNodo(keyIndexInNode);
 
+            if (predecessorChild.Datos.Count() >= grado)
+            {
+             //  BNode<TLlave, T> predecessor = DeletePredecessor(predecessorChild);
+                
+            }
         }
+
+        //private BNode<TLlave, T> DeletePredecessor(BNode<TLlave, T> node)
+        //{
+        //    //γθμπλεταρ
+        //    if (EsHoja(node.Hijos))
+        //    {
+        //        string ItemToRemove = node.Datos[node.Datos.Count() - 1];
+        //        node.Datos = node.Datos.Where(val => val != ItemToRemove).ToArray();
+        //        node.Llaves = node.Llaves.Where(val => val != ItemToRemove).ToArray();
+        //        //fabricar.GuardarNodo(node.Informacion());
+
+        //    }
+
+        //}
 
         private void EliminarLlavedeSubarbol(BNode<TLlave, T> parentNode, TLlave keyToDelete, int subtreeIndexInNode)
         {
+            
+            BNode<TLlave, T> childNode = fabricar.TraerNodo(int.Parse(parentNode.Hijos[subtreeIndexInNode]));
 
+            if (!(childNode.Datos.Count() < fabricar.ObtenerGrado()))
+            {
+                //γθμπλεταρ
+
+            }
+            EliminarInterno(childNode, keyToDelete);
         }
         #endregion
     }

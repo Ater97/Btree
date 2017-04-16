@@ -23,7 +23,7 @@ namespace Laboratorio_3
             //    }
             //}
             Guid guid = Guid.NewGuid();
-            BTree<Guid, int> tree = new BTree<Guid, int>(4);
+            BTree<Guid, Guid> tree = new BTree<Guid, Guid>(3);
             for (int i = 0; i < 10; i++)
             {
                 Guid nguid = Guid.NewGuid();
@@ -31,7 +31,7 @@ namespace Laboratorio_3
                 {
                     guid = nguid;
                 }
-                tree.Insert(nguid, i);
+                tree.Insert(nguid, nguid);
             }
             tree.Delete(guid);
         Console.WriteLine("good.");
