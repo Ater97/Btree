@@ -18,7 +18,7 @@ namespace Prueba_Arbol_B
             Guid guid;
             int orden;
             Console.WriteLine("Se empezo la inserción.");
-            for (int j = 7; j<8; j++)
+            for (int j = 10; j<11; j++)
             {
                 sw.Start();
                 orden = j;
@@ -30,7 +30,7 @@ namespace Prueba_Arbol_B
                     guid = Guid.NewGuid();
                     arbol.Insertar(guid.ToString(), guid);
 
-                    if (i == 100)
+                    if ((i % 100) == 0)
                     {
                         registros.Add(guid);
                     }
@@ -41,15 +41,22 @@ namespace Prueba_Arbol_B
                 TimeSpan elapsedTime = sw.Elapsed;
                 sw.Reset();
                 Console.WriteLine("Time" + elapsedTime);
-
-               arbol.Eliminar(registros[0].ToString());
+                for (int i = 0; i < registros.Count(); i++)
+                {
+                    arbol.Eliminar(registros[i].ToString());
+                }
+               
             }
             Console.ReadKey();
 
             Console.WriteLine("Inicia busqueda");
 
-            Console.WriteLine("Dato Buscado: " + registros[0].ToString());
-            Console.WriteLine("¿Encontrado? {0} ", arbol.Buscar(registros[0].ToString(), registros[0]));         
+            for (int i = 0; i < registros.Count(); i++)
+            {
+                Console.WriteLine("Dato Buscado: " + registros[i].ToString());
+                Console.WriteLine("¿Encontrado? {0} ", arbol.Buscar(registros[i].ToString(), registros[i]));
+            }
+                  
             Console.WriteLine("Se ha terminado la inserción.");
 
             Console.ReadKey();

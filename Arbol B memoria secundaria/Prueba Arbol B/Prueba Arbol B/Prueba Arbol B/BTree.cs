@@ -530,7 +530,12 @@ namespace Prueba_Arbol_B
             //τερμιναδο
             if (llaves.Count() == casilla)
             {
-                return casilla - 1;
+                if(llaves.Contains("####################################"))
+                {
+                    int index = Array.IndexOf(llaves, "####################################");
+                    return index - 1;
+                }
+                return (llaves.Count() - 1);
             }
             if (llaves[casilla].CompareTo(key) < 0)
             {
@@ -547,6 +552,8 @@ namespace Prueba_Arbol_B
             if (i < 0)
             {
              i = aDondeir(node.Llaves, keyToDelete, 0);
+                if (i < 0) //nodo nulo, eliminar nodo completamente....
+                    i = 0;
             }
             if (i < node.Llaves.Count() && node.Llaves[i].CompareTo(keyToDelete) == 0)
             {
@@ -577,9 +584,8 @@ namespace Prueba_Arbol_B
                     fabricar.CambiarTamaño(tamanio);
                     return;
                 }
-
-                //Eliminar nodo completamente
                 //γθμπλεταρ
+                //Eliminar nodo completamente
             }
             //γθμπλεταρ
             BNode<TLlave, T> predecessorChild = fabricar.TraerNodo(keyIndexInNode);
@@ -599,7 +605,7 @@ namespace Prueba_Arbol_B
         //        string ItemToRemove = node.Datos[node.Datos.Count() - 1];
         //        node.Datos = node.Datos.Where(val => val != ItemToRemove).ToArray();
         //        node.Llaves = node.Llaves.Where(val => val != ItemToRemove).ToArray();
-        //        //fabricar.GuardarNodo(node.Informacion());
+        //       
         //    }
         //}
 
@@ -729,37 +735,40 @@ namespace Prueba_Arbol_B
                         fabricar.GuardarNodo(parentNode.Informacion());
                         fabricar.GuardarNodo(childNode.Informacion());
                     }
-                    else
+                    else if(rightSibling != null)
                     {
                         //βετα
                         childNode.Datos[childNode.Datos.Count() - 1] = (parentNode.Datos[subtreeIndexInNode]);
                         childNode.Llaves[childNode.Llaves.Count() - 1] = (parentNode.Llaves[subtreeIndexInNode]);
-
-                        var a = new string[rightSibling.Datos.Length + childNode.Datos.Length];
-                        childNode.Datos.CopyTo(a, 0);
-                        rightSibling.Datos.CopyTo(a, childNode.Datos.Length);
-
-                        a = new string[rightSibling.Llaves.Length + childNode.Llaves.Length];
-                        childNode.Llaves.CopyTo(a, 0);
-                        rightSibling.Llaves.CopyTo(a, childNode.Llaves.Length);
-
-                        if (!EsHoja(rightSibling.Hijos))
+                        if (rightSibling != null)
                         {
-                            a = new string[rightSibling.Hijos.Length + childNode.Hijos.Length];
-                            childNode.Hijos.CopyTo(a, 0);
-                            rightSibling.Hijos.CopyTo(a, childNode.Hijos.Length);
+                            var a = new string[rightSibling.Datos.Length + childNode.Datos.Length];
+                            childNode.Datos.CopyTo(a, 0);
+                            rightSibling.Datos.CopyTo(a, childNode.Datos.Length);
+
+                            a = new string[rightSibling.Llaves.Length + childNode.Llaves.Length];
+                            childNode.Llaves.CopyTo(a, 0);
+                            rightSibling.Llaves.CopyTo(a, childNode.Llaves.Length);
+
+                            if (!EsHoja(rightSibling.Hijos))
+                            {
+                                a = new string[rightSibling.Hijos.Length + childNode.Hijos.Length];
+                                childNode.Hijos.CopyTo(a, 0);
+                                rightSibling.Hijos.CopyTo(a, childNode.Hijos.Length);
+                            }
+
+                            string ItemToRemove = parentNode.Hijos[rightIndex];
+                            parentNode.Hijos = parentNode.Hijos.Where(val => val != ItemToRemove).ToArray();
+
+                            ItemToRemove = parentNode.Datos[subtreeIndexInNode];
+                            parentNode.Datos = parentNode.Datos.Where(val => val != ItemToRemove).ToArray();
+
+                            ItemToRemove = parentNode.Llaves[subtreeIndexInNode];
+                            parentNode.Llaves = parentNode.Llaves.Where(val => val != ItemToRemove).ToArray();
+
+                            fabricar.GuardarNodo(parentNode.Informacion());
+                            fabricar.GuardarNodo(childNode.Informacion());
                         }
-                        string ItemToRemove = parentNode.Hijos[rightIndex];
-                        parentNode.Hijos = parentNode.Hijos.Where(val => val != ItemToRemove).ToArray();
-
-                        ItemToRemove = parentNode.Datos[subtreeIndexInNode];
-                        parentNode.Datos = parentNode.Datos.Where(val => val != ItemToRemove).ToArray();
-
-                        ItemToRemove = parentNode.Llaves[subtreeIndexInNode];
-                        parentNode.Llaves = parentNode.Llaves.Where(val => val != ItemToRemove).ToArray();
-
-                        fabricar.GuardarNodo(parentNode.Informacion());
-                        fabricar.GuardarNodo(childNode.Informacion());
                     }
                 }
             }
