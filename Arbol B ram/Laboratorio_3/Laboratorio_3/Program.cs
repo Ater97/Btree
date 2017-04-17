@@ -24,10 +24,10 @@ namespace Laboratorio_3
             //}
             Guid guid = Guid.NewGuid();
             BTree<Guid, Guid> tree = new BTree<Guid, Guid>(3);
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 Guid nguid = Guid.NewGuid();
-                if (i==5)
+                if (i==100)
                 {
                     guid = nguid;
                 }

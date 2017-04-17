@@ -171,7 +171,6 @@ namespace Laboratorio_3.Utilities
                         childNode.Entries.Insert(0, parentNode.Entries[subtreeIndexInNode]);
                         var oldEntries = childNode.Entries;
                         childNode.Entries = leftSibling.Entries;
-                        /////
                         childNode.Entries.AddRange(oldEntries);
                         if (!leftSibling.IsLeaf)
                         {

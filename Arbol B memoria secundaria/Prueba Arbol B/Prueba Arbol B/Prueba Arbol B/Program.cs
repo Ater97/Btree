@@ -18,19 +18,19 @@ namespace Prueba_Arbol_B
             Guid guid;
             int orden;
             Console.WriteLine("Se empezo la inserción.");
-            for (int j = 10; j<11; j++)
+            for (int j = 7; j<8; j++)
             {
                 sw.Start();
                 orden = j;
 
                 arbol = new BTree<string, Guid>("ArbolB-" + orden.ToString() + ".txt", orden);
 
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 1000; i++)
                 {
                     guid = Guid.NewGuid();
                     arbol.Insertar(guid.ToString(), guid);
 
-                    if (i == 5)
+                    if (i == 100)
                     {
                         registros.Add(guid);
                     }
