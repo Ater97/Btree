@@ -29,7 +29,7 @@ namespace Prueba_Arbol_B
         #region Insertar
         //Metodos Insertar
         public void Insertar(TLlave key, T dato)
-        {                 
+        {
             if (fabricar.Empty())
             {
                 //Cuando lo que este insertando sea la raiz
@@ -63,7 +63,7 @@ namespace Prueba_Arbol_B
             int raiz = fabricar.ObtenerRaiz();
             BNode<TLlave, T> nodo = fabricar.TraerNodo(raiz);
 
-            while(!EsHoja(nodo.Hijos))
+            while (!EsHoja(nodo.Hijos))
             {
                 int hijo = ADondeIr(nodo.Llaves, key);
                 nodo = fabricar.TraerNodo(int.Parse(nodo.Hijos[hijo]));
@@ -166,14 +166,14 @@ namespace Prueba_Arbol_B
                     //Se crean listas para encontrar el nodo que debe subir
                     i = 0;
 
-                    while ((llave.CompareTo(nodo.Llaves[i]) > 0) && (i < grado -1))
+                    while ((llave.CompareTo(nodo.Llaves[i]) > 0) && (i < grado - 1))
                     {
                         lista.Insert(i, nodo.Llaves[i]);
                         listaDatos.Insert(i, nodo.Datos[i]);
                         listapunt.Insert(i, nodo.Hijos[i]);
                         i++;
 
-                        if(i == nodo.Llaves.Count())
+                        if (i == nodo.Llaves.Count())
                         {
                             break;
                         }
@@ -182,8 +182,8 @@ namespace Prueba_Arbol_B
 
                     lista.Insert(i, llave);
                     listaDatos.Insert(i, info);
-                    
-                    if(hijo1 != null)
+
+                    if (hijo1 != null)
                     {
                         listapunt.Insert(i, hijo1.Posicion.ToString("D11"));
                     }
@@ -192,13 +192,13 @@ namespace Prueba_Arbol_B
                         listapunt.Insert(i, int.MinValue.ToString());
                     }
 
-                    if(hijo2 != null)
+                    if (hijo2 != null)
                     {
                         listapunt.Insert(i + 1, hijo2.Posicion.ToString("D11"));
                     }
                     else
                     {
-                        listapunt.Insert(i + 1,int.MinValue.ToString());
+                        listapunt.Insert(i + 1, int.MinValue.ToString());
                     }
 
 
@@ -251,7 +251,7 @@ namespace Prueba_Arbol_B
                     //Para limpiar los demas nodos :s
                     nodo.Hijos[centro] = listapunt[centro];
 
-                    if(centro != nodo.Hijos.Count)
+                    if (centro != nodo.Hijos.Count)
                     {
                         for (int x = centro + 1; x < nodo.Hijos.Count; x++)
                         {
@@ -263,7 +263,7 @@ namespace Prueba_Arbol_B
 
                     for (j = 0; j < Nuevo.Llaves.Count; j++)
                     {
-                        if(grado % 2 == 0)
+                        if (grado % 2 == 0)
                         {
                             if (j <= centro)
                             {
@@ -281,7 +281,7 @@ namespace Prueba_Arbol_B
                                 Nuevo.Hijos[j] = listapunt[centro + j + 1];
                             }
                         }
-                       
+
                     }
 
                     Nuevo.Hijos[EspaciosUsados(Nuevo.Llaves)] = listapunt[grado];
@@ -292,19 +292,19 @@ namespace Prueba_Arbol_B
                     {
                         BNode<TLlave, T> temp = fabricar.TraerNodo(int.Parse(nodo.Hijos[j]));
 
-                        if(temp != null)
+                        if (temp != null)
                         {
                             temp.Padre = nodo.Posicion;
                             fabricar.GuardarNodo(temp.Informacion());
                         }
                     }
-                        //if (nodo->Hijos[j])
-                        //    (nodo->Hijos[j])->Padre = nodo;
+                    //if (nodo->Hijos[j])
+                    //    (nodo->Hijos[j])->Padre = nodo;
 
                     for (j = 0; j <= EspaciosUsados(Nuevo.Llaves); j++)
                     {
                         BNode<TLlave, T> temp = fabricar.TraerNodo(int.Parse(Nuevo.Hijos[j]));
-                        if(temp != null)
+                        if (temp != null)
                         {
                             temp.Padre = Nuevo.Posicion;
                             fabricar.GuardarNodo(temp.Informacion());
@@ -326,22 +326,22 @@ namespace Prueba_Arbol_B
 
                     i = 0;
 
-                    if(EspaciosUsados(nodo.Llaves) > 0)
+                    if (EspaciosUsados(nodo.Llaves) > 0)
                     {
                         int llavesUsadas = EspaciosUsados(nodo.Llaves);
 
-                        while((i < llavesUsadas) && (llave.CompareTo(nodo.Llaves[i]) > 0)) i++;
+                        while ((i < llavesUsadas) && (llave.CompareTo(nodo.Llaves[i]) > 0)) i++;
                         {
-                            for (j =llavesUsadas; j > i; j--)
+                            for (j = llavesUsadas; j > i; j--)
                             {
                                 nodo.Llaves[j] = nodo.Llaves[j - 1];
                                 nodo.Datos[j] = nodo.Datos[j - 1];
                             }
-  
+
                             for (j = llavesUsadas + 1; j > i; j--)
                             {
                                 nodo.Hijos[j] = nodo.Hijos[j - 1];
-                            }                         
+                            }
                         }
                     }
 
@@ -349,7 +349,7 @@ namespace Prueba_Arbol_B
                     nodo.Datos[i] = info;
 
                     //Asignar hijo 1 al nodo
-                    if(hijo1 != null)
+                    if (hijo1 != null)
                     {
                         nodo.Hijos[i] = int.Parse(hijo1.Posicion.ToString()).ToString("D11");
                         hijo1.Padre = nodo.Posicion;
@@ -358,9 +358,9 @@ namespace Prueba_Arbol_B
                     {
                         nodo.Hijos[i] = int.MinValue.ToString();
                     }
-                    
+
                     //Asignar hijo 2 al nodo
-                    if(hijo2 != null)
+                    if (hijo2 != null)
                     {
                         nodo.Hijos[i + 1] = int.Parse(hijo2.Posicion.ToString()).ToString("D11");
                         hijo2.Padre = nodo.Posicion;
@@ -375,7 +375,7 @@ namespace Prueba_Arbol_B
                     fabricar.GuardarNodo(hijo1.Informacion());
                     fabricar.GuardarNodo(hijo2.Informacion());
 
-                    salir = true;               
+                    salir = true;
                 }
 
             }
@@ -389,7 +389,11 @@ namespace Prueba_Arbol_B
         {
             BNode<TLlave, T> nodo;
 
-            if(fabricar.Empty())
+            if (fabricar.Empty())
+            {
+                return int.MinValue;
+            }
+            else if(fabricar.buscar(key, dato))
             {
                 return int.MinValue;
             }
@@ -399,11 +403,11 @@ namespace Prueba_Arbol_B
                 nodo = fabricar.TraerNodo(raiz);
 
                 //Inicia la busqueda desde la raiz.
-                while(nodo != null)
+                while (nodo != null)
                 {
-                    for(int i = 0; i < nodo.Datos.Count; i++)
+                    for (int i = 0; i < nodo.Datos.Count; i++)
                     {
-                        if(nodo.Datos[i] == dato.ToString())
+                        if (nodo.Datos[i] == dato.ToString())
                         {
                             return nodo.Posicion;
                         }
@@ -425,7 +429,7 @@ namespace Prueba_Arbol_B
 
         private int EspaciosUsados(List<string> llaves)
         {
-            int espacios = 0; 
+            int espacios = 0;
 
             for (int i = 0; i < llaves.Count; i++)
             {
@@ -458,9 +462,9 @@ namespace Prueba_Arbol_B
 
         private bool EsHoja(List<string> hijos)
         {
-            for(int x = 0; x < hijos.Count; x++)
-            {              
-                if(hijos[x] != int.MinValue.ToString())
+            for (int x = 0; x < hijos.Count; x++)
+            {
+                if (hijos[x] != int.MinValue.ToString())
                 {
                     return false;
                 }
@@ -468,14 +472,14 @@ namespace Prueba_Arbol_B
             return true;
         }
 
-        private int ADondeIr(List<string> llaves, TLlave key) 
+        private int ADondeIr(List<string> llaves, TLlave key)
         {
             //El arreglo que se recibe es el arreglo de llaves.
             int hijo = grado - 1;
 
-            for(int i = 0; i < grado -1; i++)
+            for (int i = 0; i < grado - 1; i++)
             {
-                if(llaves[i] != llaveNull)
+                if (llaves[i] != llaveNull)
                 {
                     if (!(key.ToString().CompareTo(llaves[i]) > 0))
                     {
@@ -494,7 +498,7 @@ namespace Prueba_Arbol_B
 
 
         #region Eliminar
-        public bool Eliminar(TLlave key)
+        public bool Elimina(TLlave key)
         {
             if (fabricar.Empty())
             {
@@ -586,7 +590,7 @@ namespace Prueba_Arbol_B
             {
                 //   BNode<TLlave, T> predecessor = DeletePredecessor(predecessorChild);
             }
-         }
+        }
 
         //private BNode<TLlave, T> DeletePredecessor(BNode<TLlave, T> node)
         //{
@@ -765,8 +769,58 @@ namespace Prueba_Arbol_B
             }
             EliminarInterno(childNode, keyToDelete);
         }
-            
-            #endregion
-
+        #region E
+        public bool Eliminar(TLlave key)
+        {
+            if (fabricar.Empty())
+            {
+                return false;
+            }
+            else
+            {
+                int raiz = fabricar.ObtenerRaiz();
+                BNode<TLlave, T> nodo = fabricar.TraerNodo(raiz);
+                EliminarIntern(nodo, key);
+                return true;
+            }
         }
+
+        private void EliminarIntern(BNode<TLlave, T> node, TLlave keyToDelete)
+        {
+            int i = Array.IndexOf(node.Llaves.ToArray(), keyToDelete.ToString());
+            if (i < 0)
+            {
+                i = aDondeir(node.Llaves, keyToDelete, 0);
+                if (i < 0) //nodo nulo, eliminar nodo completamente....
+                    i = 0;
+            }
+            if (i < node.Llaves.Count() && node.Llaves[i].CompareTo(keyToDelete) == 0)
+            {
+                EliminarLlaveNode(node, keyToDelete, i);
+                return;
+            }
+            if (!EsHoja(node.Hijos))
+            {
+                EliminarLlavedeSubarbo(node, keyToDelete, i);
+            }
+        }
+        private void EliminarLlavedeSubarbo(BNode<TLlave, T> parentNode, TLlave keyToDelete, int subtreeIndexInNode)
+        {
+            BNode<TLlave, T> childNode = fabricar.TraerNodo(int.Parse(parentNode.Hijos[subtreeIndexInNode]));
+            EliminarIntern(childNode, keyToDelete);
+        }
+        private void EliminarLlaveNode(BNode<TLlave, T> node, TLlave keyToDelete, int keyIndexInNode)
+        {
+            string KeyToRemove = node.Llaves[keyIndexInNode];
+            string ItemToRemove = node.Datos[keyIndexInNode];
+
+            fabricar.NodoDeFabrica();
+            BNode<TLlave, T> nodo = fabricar.NodoV();
+            nodo.Llaves[0] = KeyToRemove.ToString();
+            nodo.Datos[0] = ItemToRemove.ToString();
+            fabricar.Eliminar(nodo.Informacion());
+        }
+        #endregion
+        #endregion
+    }
 }

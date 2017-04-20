@@ -42,8 +42,9 @@ namespace Prueba_Arbol_B
         /// </summary>
         public void crearFolder()
         {
-            direccion = @"C:\Users\bryan\Desktop\BTree tests\";
-           // direccion = @"Archivo\";
+            // direccion = @"C:\Users\sebas\Desktop\BTree tests\";
+            // direccion = @"C:\Users\bryan\Desktop\BTree tests\";
+            direccion = @"Archivo\";
             Directory.CreateDirectory(direccion);
             direccion = Path.Combine(direccion, nombreArchivo);
         }
@@ -430,6 +431,106 @@ namespace Prueba_Arbol_B
             reader.DiscardBufferedData();
 
             return gradoArbol;
+        }
+        //
+        string strpath = @"Archivo\Prb.txt";
+        public bool Eliminar(string[] nodo)
+        {
+            try
+            {
+                if (!File.Exists(strpath))
+                {
+                    FileStream fs = File.Create(strpath);
+                    fs.Close();
+                }
+                string[] lines = File.ReadAllLines(strpath);
+                File.WriteAllText(strpath, "");
+
+                string guardar = string.Empty;
+
+                for (int i = 0; i < nodo.Length; i++)
+                {
+                    if (nodo[i] == "")
+                    {
+                        guardar += " | ";
+                    }
+                    else
+                    {
+                        guardar += nodo[i] + "|";
+                    }
+                }
+                using (StreamWriter File = new StreamWriter(strpath, true))
+                {
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        File.WriteLine(lines[i]);
+                    }
+                    File.WriteLine(guardar);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public BNode<TLlave, T> NodoV()
+        {
+            string nuevoNodo = string.Empty;
+            nuevoNodo += posicionLibre.ToString("D11");
+            nuevoNodo += "|" + int.MinValue.ToString();
+
+            //Hijos
+            nuevoNodo += "|||";
+
+            for (int i = 0; i < grado; i++)
+            {
+                nuevoNodo += int.MinValue.ToString() + "|";
+            }
+
+            //Llaves del nodo
+            nuevoNodo += "||";
+            dataNull = "####################################";
+
+
+            for (int i = 0; i < grado - 1; i++)
+            {
+                nuevoNodo += dataNull + "|";
+            }
+
+            //Contenido nulo del nodo
+            nuevoNodo += "||";
+            for (int i = 0; i < grado - 1; i++)
+            {
+                nuevoNodo += dataNull + "|";
+            }
+
+            string linea = nuevoNodo.Remove(nuevoNodo.Length - 1, 1);
+            string[] componentes = linea.Split(new char[] { '|', '|', '|' });
+            BNode<TLlave, T> node = new BNode<TLlave, T>(grado, componentes);
+            return node;
+        }
+        
+        public bool buscar(TLlave key, T dato)
+        {
+            try
+            {
+                string[] lines = File.ReadAllLines(strpath);
+                for (int i = 0; i < lines.Count(); i++)
+                {
+                    if (lines[i].Contains(key.ToString()))
+                    {
+                        return true;
+                    }
+                }
+               
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

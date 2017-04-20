@@ -17,10 +17,10 @@ namespace Prueba_Arbol_B
             BTree<string, Guid> arbol = null;
             Guid guid;
             int orden;
-
+            TimeSpan elapsedTime;
             Console.WriteLine("Se empezo la inserción.");
 
-            for (int j = 5; j< 11; j++)
+            for (int j = 5; j< 13; j++)
             {               
                 orden = j;
 
@@ -29,37 +29,56 @@ namespace Prueba_Arbol_B
                 sw.Start();
                 arbol = new BTree<string, Guid>("ArbolB-" + orden.ToString() + ".btree", orden);
 
-                for (int i = 0; i < 20000; i++)
+                for (int i = 0; i < 100000; i++)
                 {
                     guid = Guid.NewGuid();
                     arbol.Insertar(guid.ToString(), guid);
 
-                    //if ((i % 50) == 0)
-                    //{
-                    //    registros.Add(guid);
-                    //}
+                    if ((i % 1000) == 0)
+                    {
+                        registros.Add(guid);
+                    }
                 }
 
                 Console.WriteLine("     Se ha terminado la inserción del árbol de orden {0} ", orden);
                 sw.Stop();
-                TimeSpan elapsedTime = sw.Elapsed;
+                elapsedTime = sw.Elapsed;
                 sw.Reset();
+                Console.WriteLine("Time: " + elapsedTime);
 
+                Console.WriteLine("Inicia busqueda");
+                sw.Start();
+                for (int i = 0; i < registros.Count(); i++)
+                {
+                    Console.WriteLine("Dato Buscado: " + registros[i].ToString());
+                    Console.WriteLine("¿Encontrado? {0} ", arbol.Buscar(registros[i].ToString(), registros[i]));
+                }
+                sw.Stop();
+                elapsedTime = sw.Elapsed;
+                sw.Reset();
                 Console.WriteLine("Time " + elapsedTime);
 
-                //for (int i = 0; i < registros.Count(); i++)
-                //{
-                //    arbol.Eliminar(registros[i].ToString());
-                //}
-                //Console.WriteLine("Se ha terminado la eliminacion.");
+                Console.WriteLine("\nInicio Eliminacion");
+                sw.Start();
+                for (int i = 0; i < registros.Count(); i++)
+                {
+                    if (arbol.Eliminar(registros[i].ToString()))
+                    {
+                        Console.WriteLine(registros[i].ToString() + " Eliminado");
+                    }
+                    else
+                    {
+                        Console.WriteLine(registros[i].ToString() + " Error");
+                    }
+                    
+                }
+                Console.WriteLine("Se ha terminado la eliminacion.");
+                sw.Stop();
+                elapsedTime = sw.Elapsed;
+                sw.Reset();
+                Console.WriteLine("Time " + elapsedTime + "\n");
+                
 
-                //Console.WriteLine("Inicia busqueda");
-
-                //for (int i = 0; i < registros.Count(); i++)
-                //{
-                //    Console.WriteLine("Dato Buscado: " + registros[i].ToString());
-                //    Console.WriteLine("¿Encontrado? {0} ", arbol.Buscar(registros[i].ToString(), registros[i]));
-                //}
             }
 
           
