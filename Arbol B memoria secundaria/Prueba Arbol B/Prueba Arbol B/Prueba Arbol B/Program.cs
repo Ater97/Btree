@@ -22,9 +22,25 @@ namespace Prueba_Arbol_B
             List<string> TimesI = new List<string>();
             List<string> TimesB = new List<string>();
             List<string> TimesE = new List<string>();
+            bool flag = true;
             int gradoInicial = 5;
             int gradoFinal = 13;
-
+            while (flag)
+            {
+                try
+                {
+                    Console.Clear();
+                    Console.WriteLine("Ingrese el grado con el que desea iniciar la prueba:");
+                    gradoInicial = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Ingrese el grado con el que desea terminar la prueba:");
+                    gradoFinal = int.Parse(Console.ReadLine());
+                    flag = false;
+                }
+                catch
+                {
+                    flag = true;
+                }
+            }
             for (int j = gradoInicial; j< gradoFinal; j++)
             {               
                 orden = j;
