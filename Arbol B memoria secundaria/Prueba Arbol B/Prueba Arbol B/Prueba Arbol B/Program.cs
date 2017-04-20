@@ -50,7 +50,7 @@ namespace Prueba_Arbol_B
                 sw.Start();
                 arbol = new BTree<string, Guid>("ArbolB-" + orden.ToString() + ".btree", orden);
 
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 100000; i++)
                 {
                     guid = Guid.NewGuid();
                     arbol.Insertar(guid.ToString(), guid);
