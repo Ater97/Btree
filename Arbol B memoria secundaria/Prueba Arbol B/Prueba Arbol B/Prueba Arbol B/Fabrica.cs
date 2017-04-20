@@ -10,24 +10,26 @@ namespace Prueba_Arbol_B
     public class Fabrica<TLlave, T> where TLlave : IComparable<TLlave> where T : IComparable<T>
     {
         //Generar mi archivo 
-
         private string nombreArchivo;
         private string path;
         private int grado;
         private int altura;
         private int tamaño;
         private int posicionLibre;
-        private string dataNull;
         string direccion;
 
-        //Variables necesarias para abrir el archivo...
+        //Nullos
+        private string dataNull;
+        private string llaveNull;
 
+        //Variables necesarias para abrir el archivo...
         FileStream stream;
         StreamReader reader;
         StreamWriter writer;
 
-
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void AbrirArchivo()
         {
             stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
@@ -35,6 +37,9 @@ namespace Prueba_Arbol_B
             writer = new StreamWriter(stream);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void crearFolder()
         {
             direccion = @"C:\Users\bryan\Desktop\BTree tests\";
@@ -43,6 +48,11 @@ namespace Prueba_Arbol_B
             direccion = Path.Combine(direccion, nombreArchivo);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="NombreArchivo"></param>
+        /// <param name="Grado"></param>
         public Fabrica(string NombreArchivo, int Grado)
         {
             nombreArchivo = NombreArchivo;
@@ -56,6 +66,10 @@ namespace Prueba_Arbol_B
             GenerarArbol();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="NombreArchivo"></param>
         public Fabrica(string NombreArchivo)
         {
             nombreArchivo = NombreArchivo;
@@ -64,6 +78,52 @@ namespace Prueba_Arbol_B
             CargarEncabezado();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tipoLlave"></param>
+        /// <param name="tipoDatos"></param>
+        private void CargarNullos(string tipoLlave, string tipoDatos)
+        {
+            switch(llaveNull)
+            {
+                case "int":
+                    llaveNull = int.MinValue.ToString();
+                    break;
+                case "string":
+                    llaveNull = "####################################";
+                    break;
+                case "Guid":
+                    llaveNull = "####################################";
+                    break;
+                default:
+                    llaveNull = "####################################";
+                    break;
+            }
+
+            switch(tipoDatos)
+            {
+                case "int":
+                    dataNull = int.MinValue.ToString();
+                    break;
+                case "string":
+                    dataNull = "####################################";
+                    break;
+                case "Guid":
+                    dataNull = "####################################";
+                    break;
+                default:
+                    dataNull = "####################################";
+                    break;
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void CargarEncabezado()
         {
             reader.BaseStream.Seek(13, SeekOrigin.Begin);
@@ -99,6 +159,10 @@ namespace Prueba_Arbol_B
             }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void NodoDeFabrica()
         {
             string nuevoNodo = string.Empty;
@@ -116,13 +180,14 @@ namespace Prueba_Arbol_B
             //Llaves del nodo
             nuevoNodo += "||";
             dataNull = "####################################";
+
+
             for (int i = 0; i < grado - 1; i++)
             {
                 nuevoNodo += dataNull + "|";
             }
 
             //Contenido nulo del nodo
-
             nuevoNodo += "||";         
             for (int i = 0; i < grado - 1; i++)
             {
@@ -144,6 +209,11 @@ namespace Prueba_Arbol_B
             writer.Flush();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="NodoActual"></param>
+        /// <returns></returns>
         public BNode<TLlave, T> TraerNodo(int NodoActual)
         {
             if(NodoActual == int.MinValue)
@@ -163,6 +233,10 @@ namespace Prueba_Arbol_B
                             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nodo"></param>
         public void GuardarNodo(string[] nodo)
         {
             string guardar = string.Empty;
@@ -178,7 +252,7 @@ namespace Prueba_Arbol_B
                     guardar += nodo[i] + "|";
                 }             
             }
-            int j = guardar.Length;
+
             int posicion = PosicionEnArchivo(int.Parse(nodo[0]));
 
             //FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Write);
@@ -187,6 +261,11 @@ namespace Prueba_Arbol_B
             writer.Flush();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="NodoBuscado"></param>
+        /// <returns></returns>
         private int PosicionEnArchivo(int NodoBuscado)
         {
             //Ignoramos el encabezado
@@ -211,8 +290,12 @@ namespace Prueba_Arbol_B
             }
 
             return posicion;
-        } 
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public bool Empty()
         {
             reader.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -222,6 +305,10 @@ namespace Prueba_Arbol_B
             return raiz == int.MinValue.ToString();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public int ObtenerRaiz()
         {
             //FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
@@ -234,6 +321,10 @@ namespace Prueba_Arbol_B
             return int.Parse(raiz);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public int ObtenerPosicionLibre()
         {
             //FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
@@ -246,6 +337,10 @@ namespace Prueba_Arbol_B
             return int.Parse(posicion);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nuevaRaiz"></param>
         public void CambiarRaiz(int nuevaRaiz)
         {
             //FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Write);
@@ -256,6 +351,10 @@ namespace Prueba_Arbol_B
             writer.Flush();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="agregar"></param>
         public void CambiarAltura(int agregar)
         {
             int posicion = 52;
@@ -267,6 +366,10 @@ namespace Prueba_Arbol_B
             writer.Flush();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public int ObtenerAltura()
         {
             int posicion = 52;
@@ -280,6 +383,10 @@ namespace Prueba_Arbol_B
             return altura;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="agregar"></param>
         public void CambiarTamaño(int agregar)
         {
             int posicion = 26;
@@ -291,6 +398,10 @@ namespace Prueba_Arbol_B
             writer.Flush();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public int ObtenerTamaño()
         {
             int posicion = 26;
@@ -304,6 +415,10 @@ namespace Prueba_Arbol_B
             return tamanio;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public int ObtenerGrado()
         {
             int posicion = 39;

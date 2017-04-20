@@ -66,12 +66,12 @@ namespace Prueba_Arbol_B
             while(!EsHoja(nodo.Hijos))
             {
                 int hijo = ADondeIr(nodo.Llaves, key);
-                int traer = int.Parse(nodo.Hijos[hijo]);
-                nodo = fabricar.TraerNodo(traer);
+                nodo = fabricar.TraerNodo(int.Parse(nodo.Hijos[hijo]));
             }
 
             if (HayEspacio(nodo.Llaves))
             {
+                //Si hay espacio para insertar el elemento
                 nodo = InsertaEnNodoHoja(nodo, key, dato);
                 fabricar.GuardarNodo(nodo.Informacion());
             }
@@ -84,10 +84,13 @@ namespace Prueba_Arbol_B
 
         private BNode<TLlave, T> InsertaEnNodoHoja(BNode<TLlave, T> nodo, TLlave key, T dato)
         {
-            for (int i = 0; i < nodo.Llaves.Length; i++)
+            int i = 0;
+
+            for (i = 0; i < nodo.Llaves.Count; i++)
             {
                 //Si en caso el dato era mayor a todos los anteriores se inserta en la primera posicion
                 //vacia que encuentre
+
                 if (nodo.Llaves[i] == llaveNull)
                 {
                     nodo.Llaves[i] = key.ToString();
@@ -98,27 +101,23 @@ namespace Prueba_Arbol_B
                 {
                     if (!(key.ToString().CompareTo(nodo.Llaves[i]) > 0))
                     {
-                        //Encuentra la siguiente posicion vacia para hacer el corrimiento de los datos
-                        int vacio = EncontrarPosicionVacia(nodo.Llaves);
+                        //Si la llave es menor a la llave del registro ingresa e inserta el dato en esa posicion y
+                        //automaticamente se corren los registros...
 
-                        while (vacio != i)
-                        {
-                            //Mover Llaves
-                            nodo.Llaves[vacio] = nodo.Llaves[vacio - 1];
-                            //Mover Data
-                            nodo.Datos[vacio] = nodo.Datos[vacio - 1];
-                            vacio--;
-                        }
+                        //Llaves
+                        nodo.Llaves.Insert(i, key.ToString());
+                        nodo.Llaves.RemoveAt(nodo.Llaves.Count - 1);
 
-                        nodo.Llaves[i] = key.ToString();
-                        nodo.Datos[i] = dato.ToString();
+                        //Datos
+                        nodo.Datos.Insert(i, dato.ToString());
+                        nodo.Datos.RemoveAt(nodo.Llaves.Count - 1);
+
                         return nodo;
                     }
                 }
             }
 
             return nodo;
-
         }
 
         private void InsertarEnNodoLleno(BNode<TLlave, T> nodo, TLlave key, T dato)
@@ -232,7 +231,7 @@ namespace Prueba_Arbol_B
 
                     //Nodo Izquierdo
 
-                    for (j = 0; j < nodo.Llaves.Length; j++)
+                    for (j = 0; j < nodo.Llaves.Count; j++)
                     {
                         if (j < centro)
                         {
@@ -252,9 +251,9 @@ namespace Prueba_Arbol_B
                     //Para limpiar los demas nodos :s
                     nodo.Hijos[centro] = listapunt[centro];
 
-                    if(centro != nodo.Hijos.Length)
+                    if(centro != nodo.Hijos.Count)
                     {
-                        for (int x = centro + 1; x < nodo.Hijos.Length; x++)
+                        for (int x = centro + 1; x < nodo.Hijos.Count; x++)
                         {
                             nodo.Hijos[x] = int.MinValue.ToString();
                         }
@@ -262,7 +261,7 @@ namespace Prueba_Arbol_B
 
                     //Nodo Derecho
 
-                    for (j = 0; j < Nuevo.Llaves.Length; j++)
+                    for (j = 0; j < Nuevo.Llaves.Count; j++)
                     {
                         if(grado % 2 == 0)
                         {
@@ -292,6 +291,7 @@ namespace Prueba_Arbol_B
                     for (j = 0; j <= EspaciosUsados(nodo.Llaves); j++)
                     {
                         BNode<TLlave, T> temp = fabricar.TraerNodo(int.Parse(nodo.Hijos[j]));
+
                         if(temp != null)
                         {
                             temp.Padre = nodo.Posicion;
@@ -401,7 +401,7 @@ namespace Prueba_Arbol_B
                 //Inicia la busqueda desde la raiz.
                 while(nodo != null)
                 {
-                    for(int i = 0; i < nodo.Datos.Length; i++)
+                    for(int i = 0; i < nodo.Datos.Count; i++)
                     {
                         if(nodo.Datos[i] == dato.ToString())
                         {
@@ -418,24 +418,16 @@ namespace Prueba_Arbol_B
         }
 
 
-        private bool HayEspacio(string[] nodo)
+        private bool HayEspacio(List<string> llaves)
         {
-            for (int i = 0; i < nodo.Length; i++)
-            {
-                if (nodo[i] == llaveNull)
-                {
-                    return true;
-                }
-            }
- 
-            return false;
+            return llaves.Contains(llaveNull);
         }
 
-        private int EspaciosUsados(string[] llaves)
+        private int EspaciosUsados(List<string> llaves)
         {
-            int espacios = 0;
+            int espacios = 0; 
 
-            for (int i = 0; i < llaves.Length; i++)
+            for (int i = 0; i < llaves.Count; i++)
             {
                 if (llaves[i] != llaveNull)
                 {
@@ -464,11 +456,11 @@ namespace Prueba_Arbol_B
             return 0;
         }
 
-        private bool EsHoja(string[] nodo)
+        private bool EsHoja(List<string> hijos)
         {
-            for(int x = 0; x < nodo.Length; x++)
+            for(int x = 0; x < hijos.Count; x++)
             {              
-                if(nodo[x] != int.MinValue.ToString())
+                if(hijos[x] != int.MinValue.ToString())
                 {
                     return false;
                 }
@@ -476,16 +468,16 @@ namespace Prueba_Arbol_B
             return true;
         }
 
-        private int ADondeIr(string[] nodo, TLlave key) 
+        private int ADondeIr(List<string> llaves, TLlave key) 
         {
             //El arreglo que se recibe es el arreglo de llaves.
             int hijo = grado - 1;
 
             for(int i = 0; i < grado -1; i++)
             {
-                if(nodo[i] != llaveNull)
+                if(llaves[i] != llaveNull)
                 {
-                    if (!(key.ToString().CompareTo(nodo[i]) > 0))
+                    if (!(key.ToString().CompareTo(llaves[i]) > 0))
                     {
                         hijo = i;
                         return hijo;
@@ -525,14 +517,14 @@ namespace Prueba_Arbol_B
             }
         }
 
-        private int aDondeir(string[] llaves, TLlave key, int casilla)
+        private int aDondeir(List<string> llaves, TLlave key, int casilla)
         {
             //τερμιναδο
             if (llaves.Count() == casilla)
             {
-                if(llaves.Contains("####################################"))
+                if (llaves.Contains("####################################"))
                 {
-                    int index = Array.IndexOf(llaves, "####################################");
+                    int index = Array.IndexOf(llaves.ToArray(), "####################################");
                     return index - 1;
                 }
                 return (llaves.Count() - 1);
@@ -548,10 +540,10 @@ namespace Prueba_Arbol_B
         private void EliminarInterno(BNode<TLlave, T> node, TLlave keyToDelete)
         {
             //τερμιναδο
-            int i = Array.IndexOf(node.Llaves, keyToDelete.ToString());
+            int i = Array.IndexOf(node.Llaves.ToArray(), keyToDelete.ToString());
             if (i < 0)
             {
-             i = aDondeir(node.Llaves, keyToDelete, 0);
+                i = aDondeir(node.Llaves, keyToDelete, 0);
                 if (i < 0) //nodo nulo, eliminar nodo completamente....
                     i = 0;
             }
@@ -571,12 +563,12 @@ namespace Prueba_Arbol_B
             //τερμιναδο
             if (EsHoja(node.Hijos))
             {
-               // if ((node.Datos.Count() >1))
+                // if ((node.Datos.Count() >1))
                 {
                     string KeyToRemove = node.Llaves[keyIndexInNode];
                     string ItemToRemove = node.Datos[keyIndexInNode];
-                    node.Datos = node.Datos.Where(val => val != ItemToRemove).ToArray();
-                    node.Llaves = node.Llaves.Where(val => val != KeyToRemove).ToArray();
+                    node.Datos = node.Datos.Where(val => val != ItemToRemove).ToArray().ToList();
+                    node.Llaves = node.Llaves.Where(val => val != KeyToRemove).ToArray().ToList();
                     fabricar.GuardarNodo(node.Informacion());
 
                     int tamanio = fabricar.ObtenerTamaño();
@@ -592,10 +584,9 @@ namespace Prueba_Arbol_B
 
             if (predecessorChild.Datos.Count() >= grado)
             {
-            //   BNode<TLlave, T> predecessor = DeletePredecessor(predecessorChild);
-                
+                //   BNode<TLlave, T> predecessor = DeletePredecessor(predecessorChild);
             }
-        }
+         }
 
         //private BNode<TLlave, T> DeletePredecessor(BNode<TLlave, T> node)
         //{
@@ -605,7 +596,7 @@ namespace Prueba_Arbol_B
         //        string ItemToRemove = node.Datos[node.Datos.Count() - 1];
         //        node.Datos = node.Datos.Where(val => val != ItemToRemove).ToArray();
         //        node.Llaves = node.Llaves.Where(val => val != ItemToRemove).ToArray();
-        //       
+
         //    }
         //}
 
@@ -625,39 +616,39 @@ namespace Prueba_Arbol_B
 
                 if (leftSibling != null && leftSibling.Datos.Count() > fabricar.ObtenerGrado() - 1)
                 {
-                    
+
                     //βετα
                     List<string> lst = childNode.Datos.OfType<string>().ToList();
                     lst.Insert(0, parentNode.Datos[subtreeIndexInNode]);
-                    childNode.Datos = lst.ToArray();
+                    childNode.Datos = lst;
 
                     lst = childNode.Llaves.OfType<string>().ToList();
                     lst.Insert(0, parentNode.Llaves[subtreeIndexInNode]);
-                    childNode.Llaves = lst.ToArray();
+                    childNode.Llaves = lst;
 
                     parentNode.Datos[subtreeIndexInNode] = leftSibling.Datos.Last();
 
                     string KeyToRemove = leftSibling.Llaves[leftSibling.Datos.Count() - 1];
                     string ItemToRemove = leftSibling.Datos[leftSibling.Datos.Count() - 1];
-                    leftSibling.Datos = leftSibling.Datos.Where(val => val != ItemToRemove).ToArray();
-                    leftSibling.Llaves = leftSibling.Llaves.Where(val => val != KeyToRemove).ToArray();
+                    leftSibling.Datos = leftSibling.Datos.Where(val => val != ItemToRemove).ToArray().ToList();
+                    leftSibling.Llaves = leftSibling.Llaves.Where(val => val != KeyToRemove).ToArray().ToList();
 
                     if (!EsHoja(leftSibling.Hijos))
                     {
                         //βετα
                         lst = childNode.Hijos.OfType<string>().ToList();
                         lst.Insert(0, leftSibling.Hijos.Last());
-                        childNode.Hijos = lst.ToArray();
+                        childNode.Hijos = lst;
 
                         KeyToRemove = leftSibling.Hijos[leftSibling.Hijos.Count() - 1];
-                        leftSibling.Hijos = leftSibling.Hijos.Where(val => val != KeyToRemove).ToArray();
-                       
+                        leftSibling.Hijos = leftSibling.Hijos.Where(val => val != KeyToRemove).ToArray().ToList();
+
                     }
                     fabricar.GuardarNodo(leftSibling.Informacion());
                     fabricar.GuardarNodo(parentNode.Informacion());
                     fabricar.GuardarNodo(childNode.Informacion());
                 }
-                else if(rightSibling != null && rightSibling.Datos.Count() > fabricar.ObtenerGrado() - 1)
+                else if (rightSibling != null && rightSibling.Datos.Count() > fabricar.ObtenerGrado() - 1)
                 {
                     //βετα
                     childNode.Hijos[childNode.Hijos.Count() - 1] = (parentNode.Hijos[subtreeIndexInNode]);
@@ -665,49 +656,49 @@ namespace Prueba_Arbol_B
                     parentNode.Llaves[subtreeIndexInNode] = rightSibling.Llaves.First();
 
                     string ItemToRemove = rightSibling.Datos[0];
-                    rightSibling.Datos = rightSibling.Datos.Where(val => val != ItemToRemove).ToArray();
+                    rightSibling.Datos = rightSibling.Datos.Where(val => val != ItemToRemove).ToArray().ToList();
 
                     ItemToRemove = rightSibling.Llaves[0];
-                    rightSibling.Llaves = rightSibling.Llaves.Where(val => val != ItemToRemove).ToArray();
+                    rightSibling.Llaves = rightSibling.Llaves.Where(val => val != ItemToRemove).ToArray().ToList();
 
                     if (!EsHoja(rightSibling.Hijos))
                     {
                         List<string> lst = childNode.Hijos.OfType<string>().ToList();
                         lst.Insert(0, rightSibling.Hijos.Last());
-                        childNode.Hijos = lst.ToArray();
+                        childNode.Hijos = lst;
 
                         ItemToRemove = rightSibling.Hijos[0];
-                        rightSibling.Hijos = rightSibling.Hijos.Where(val => val != ItemToRemove).ToArray();
+                        rightSibling.Hijos = rightSibling.Hijos.Where(val => val != ItemToRemove).ToArray().ToList();
                     }
                     fabricar.GuardarNodo(rightSibling.Informacion());
                     fabricar.GuardarNodo(parentNode.Informacion());
                     fabricar.GuardarNodo(childNode.Informacion());
                 }
                 else
-                { 
+                {
                     //βετα
                     if (leftSibling != null)
                     {
                         List<string> lst = childNode.Datos.OfType<string>().ToList();
                         lst.Insert(0, parentNode.Datos[subtreeIndexInNode]);
-                        childNode.Datos = lst.ToArray();
+                        childNode.Datos = lst;
 
                         lst = childNode.Llaves.OfType<string>().ToList();
                         lst.Insert(0, parentNode.Llaves[subtreeIndexInNode]);
-                        childNode.Llaves = lst.ToArray();
+                        childNode.Llaves = lst;
 
                         var oldEntries = childNode.Datos;
                         var oldEntriesKey = childNode.Llaves;
                         childNode.Datos = leftSibling.Datos;
                         childNode.Llaves = leftSibling.Llaves;
 
-                        var a = new string[oldEntries.Length + childNode.Datos.Length];
+                        var a = new string[oldEntries.Count + childNode.Datos.Count];
                         childNode.Datos.CopyTo(a, 0);
-                        oldEntries.CopyTo(a, childNode.Datos.Length);
+                        oldEntries.CopyTo(a, childNode.Datos.Count);
 
-                        a = new string[oldEntriesKey.Length + childNode.Llaves.Length];
+                        a = new string[oldEntriesKey.Count + childNode.Llaves.Count];
                         childNode.Llaves.CopyTo(a, 0);
-                        oldEntriesKey.CopyTo(a, childNode.Llaves.Length);
+                        oldEntriesKey.CopyTo(a, childNode.Llaves.Count);
 
                         if (!EsHoja(leftSibling.Hijos))
                         {
@@ -715,56 +706,56 @@ namespace Prueba_Arbol_B
                             var oldChildren = childNode.Hijos;
                             childNode.Hijos = leftSibling.Hijos;
 
-                            a = new string[oldEntries.Length + childNode.Datos.Length];
+                            a = new string[oldEntries.Count + childNode.Datos.Count];
                             childNode.Datos.CopyTo(a, 0);
-                            oldEntries.CopyTo(a, childNode.Datos.Length);
+                            oldEntries.CopyTo(a, childNode.Datos.Count);
 
-                            a = new string[oldEntriesKey.Length + childNode.Llaves.Length];
+                            a = new string[oldEntriesKey.Count + childNode.Llaves.Count];
                             childNode.Llaves.CopyTo(a, 0);
-                            oldEntriesKey.CopyTo(a, childNode.Llaves.Length);
+                            oldEntriesKey.CopyTo(a, childNode.Llaves.Count);
                         }
 
                         string ItemToRemove = parentNode.Hijos[leftIndex];
-                        parentNode.Hijos = parentNode.Hijos.Where(val => val != ItemToRemove).ToArray();
+                        parentNode.Hijos = parentNode.Hijos.Where(val => val != ItemToRemove).ToArray().ToList();
 
                         ItemToRemove = parentNode.Datos[subtreeIndexInNode];
-                        parentNode.Datos = parentNode.Datos.Where(val => val != ItemToRemove).ToArray();
+                        parentNode.Datos = parentNode.Datos.Where(val => val != ItemToRemove).ToArray().ToList();
 
                         ItemToRemove = parentNode.Llaves[subtreeIndexInNode];
-                        parentNode.Llaves = parentNode.Llaves.Where(val => val != ItemToRemove).ToArray();
+                        parentNode.Llaves = parentNode.Llaves.Where(val => val != ItemToRemove).ToArray().ToList();
                         fabricar.GuardarNodo(parentNode.Informacion());
                         fabricar.GuardarNodo(childNode.Informacion());
                     }
-                    else if(rightSibling != null)
+                    else if (rightSibling != null)
                     {
                         //βετα
                         childNode.Datos[childNode.Datos.Count() - 1] = (parentNode.Datos[subtreeIndexInNode]);
                         childNode.Llaves[childNode.Llaves.Count() - 1] = (parentNode.Llaves[subtreeIndexInNode]);
                         if (rightSibling != null)
                         {
-                            var a = new string[rightSibling.Datos.Length + childNode.Datos.Length];
+                            var a = new string[rightSibling.Datos.Count + childNode.Datos.Count];
                             childNode.Datos.CopyTo(a, 0);
-                            rightSibling.Datos.CopyTo(a, childNode.Datos.Length);
+                            rightSibling.Datos.CopyTo(a, childNode.Datos.Count);
 
-                            a = new string[rightSibling.Llaves.Length + childNode.Llaves.Length];
+                            a = new string[rightSibling.Llaves.Count + childNode.Llaves.Count];
                             childNode.Llaves.CopyTo(a, 0);
-                            rightSibling.Llaves.CopyTo(a, childNode.Llaves.Length);
+                            rightSibling.Llaves.CopyTo(a, childNode.Llaves.Count);
 
                             if (!EsHoja(rightSibling.Hijos))
                             {
-                                a = new string[rightSibling.Hijos.Length + childNode.Hijos.Length];
+                                a = new string[rightSibling.Hijos.Count + childNode.Hijos.Count];
                                 childNode.Hijos.CopyTo(a, 0);
-                                rightSibling.Hijos.CopyTo(a, childNode.Hijos.Length);
+                                rightSibling.Hijos.CopyTo(a, childNode.Hijos.Count);
                             }
 
                             string ItemToRemove = parentNode.Hijos[rightIndex];
-                            parentNode.Hijos = parentNode.Hijos.Where(val => val != ItemToRemove).ToArray();
+                            parentNode.Hijos = parentNode.Hijos.Where(val => val != ItemToRemove).ToArray().ToList();
 
                             ItemToRemove = parentNode.Datos[subtreeIndexInNode];
-                            parentNode.Datos = parentNode.Datos.Where(val => val != ItemToRemove).ToArray();
+                            parentNode.Datos = parentNode.Datos.Where(val => val != ItemToRemove).ToArray().ToList();
 
                             ItemToRemove = parentNode.Llaves[subtreeIndexInNode];
-                            parentNode.Llaves = parentNode.Llaves.Where(val => val != ItemToRemove).ToArray();
+                            parentNode.Llaves = parentNode.Llaves.Where(val => val != ItemToRemove).ToArray().ToList();
 
                             fabricar.GuardarNodo(parentNode.Informacion());
                             fabricar.GuardarNodo(childNode.Informacion());
@@ -774,6 +765,8 @@ namespace Prueba_Arbol_B
             }
             EliminarInterno(childNode, keyToDelete);
         }
-        #endregion
-    }
+            
+            #endregion
+
+        }
 }

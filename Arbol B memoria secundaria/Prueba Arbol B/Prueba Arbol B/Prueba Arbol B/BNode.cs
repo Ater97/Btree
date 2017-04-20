@@ -11,9 +11,9 @@ namespace Prueba_Arbol_B
         int posicion;
         int padre;
         int grado;
-        string[] hijos;
-        string[] llaves;
-        string[] datos;
+        List<string> hijos;
+        List<string> llaves;
+        List<string> datos;
 
         public int Grado
         {
@@ -54,7 +54,7 @@ namespace Prueba_Arbol_B
             }
         }
 
-        public string[] Hijos
+        public List<string> Hijos
         {
             get
             {
@@ -67,7 +67,7 @@ namespace Prueba_Arbol_B
             }
         }
 
-        public string[] Llaves
+        public List<string> Llaves
         {
             get
             {
@@ -80,7 +80,7 @@ namespace Prueba_Arbol_B
             }
         }
 
-        public string[] Datos
+        public List<string> Datos
         {
             get
             {
@@ -95,36 +95,38 @@ namespace Prueba_Arbol_B
 
         public BNode(int Grado, string[] informacion)
         {
-            this.Grado = Grado;
+            int i = 0;
+            this.grado = Grado;
             //Posicion del nodo
             Posicion = int.Parse(informacion[0]);
             //Padre del nodo
             Padre = int.Parse(informacion[1]);
 
-            Hijos = new string[grado];
-            Llaves = new string[grado - 1];
-            Datos = new string[grado - 1];
+            this.hijos = new List<string>();
+            this.llaves = new List<string>();
+            this.datos = new List<string>();
 
             //Almacenar hijos del nodo
             int recorrido = 4;
-            for(int i = 0; i < grado; i++)
+            for(i = 0; i < grado; i++)
             {
-                Hijos[i] = informacion[recorrido];
+                hijos.Add(informacion[recorrido]);
                 recorrido++;
             }
 
             //Almacenar llaves y datos del nodo
             recorrido = grado + 6;
-            for(int x = 0; x < grado -1; x++)
+            for(i = 0; i < grado -1; i++)
             {
-                Llaves[x] = informacion[recorrido];
-                Datos[x] = informacion[recorrido + grado + 1];
+                llaves.Add(informacion[recorrido]);
+                datos.Add(informacion[recorrido + grado + 1]);
                 recorrido++;
             }
         }
 
         public string[] Informacion()
         {
+            int i = 0;
             List<string> nodo = new List<string>();
 
             //Agregamos posicion 
@@ -145,9 +147,9 @@ namespace Prueba_Arbol_B
             nodo.Add("");
 
             //Almacenar hijos del nodo
-            for (int i = 0; i < hijos.Length; i++)
+            for (i = 0; i < Hijos.Count; i++)
             {
-                nodo.Add(hijos[i]);
+                nodo.Add(Hijos[i]);
             }
 
             //Son necesarios para identificar los separadores
@@ -155,9 +157,9 @@ namespace Prueba_Arbol_B
             nodo.Add("");
 
             //Almacenar las llaves del nodo
-            for (int x = 0; x < llaves.Length; x++)
+            for (i = 0; i < Llaves.Count; i++)
             {
-                nodo.Add(llaves[x]);
+                nodo.Add(Llaves[i]);
             }
 
             //Son necesarios para identificar los separadores
@@ -165,9 +167,9 @@ namespace Prueba_Arbol_B
             nodo.Add("");
 
             //Almacenar la data del nodo
-            for (int y = 0; y < llaves.Length; y++)
+            for (i = 0; i < Datos.Count; i++)
             {
-                nodo.Add(datos[y]);
+                nodo.Add(Datos[i]);
             }
 
             return nodo.ToArray();

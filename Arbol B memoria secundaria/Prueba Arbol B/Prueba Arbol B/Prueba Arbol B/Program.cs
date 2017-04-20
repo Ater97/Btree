@@ -20,7 +20,7 @@ namespace Prueba_Arbol_B
 
             Console.WriteLine("Se empezo la inserción.");
 
-            for (int j = 10; j<11; j++)
+            for (int j = 5; j< 11; j++)
             {               
                 orden = j;
 
