@@ -29,7 +29,7 @@ namespace Prueba_Arbol_B
                 sw.Start();
                 arbol = new BTree<string, Guid>("ArbolB-" + orden.ToString() + ".btree", orden);
 
-                for (int i = 0; i < 100000; i++)
+                for (int i = 0; i < 1000; i++)
                 {
                     guid = Guid.NewGuid();
                     arbol.Insertar(guid.ToString(), guid);
@@ -47,21 +47,28 @@ namespace Prueba_Arbol_B
                 Console.WriteLine("Time: " + elapsedTime);
 
                 Console.WriteLine("Inicia busqueda");
-                sw.Start();
+               
                 for (int i = 0; i < registros.Count(); i++)
                 {
+                    sw.Start();
                     Console.WriteLine("Dato Buscado: " + registros[i].ToString());
                     Console.WriteLine("¿Encontrado? {0} ", arbol.Buscar(registros[i].ToString(), registros[i]));
+                    sw.Stop();
+                    elapsedTime = +sw.Elapsed;
+                    sw.Reset();
                 }
                 sw.Stop();
-                elapsedTime = sw.Elapsed;
-                sw.Reset();
-                Console.WriteLine("Time " + elapsedTime);
+                
+                string Time = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds,
+                elapsedTime.Milliseconds / registros.Count());
+              //  sw.Reset();
+                Console.WriteLine("Time " + Time);
 
                 Console.WriteLine("\nInicio Eliminacion");
-                sw.Start();
                 for (int i = 0; i < registros.Count(); i++)
                 {
+                    sw.Start();
                     if (arbol.Eliminar(registros[i].ToString()))
                     {
                         Console.WriteLine(registros[i].ToString() + " Eliminado");
@@ -70,15 +77,17 @@ namespace Prueba_Arbol_B
                     {
                         Console.WriteLine(registros[i].ToString() + " Error");
                     }
-                    
+                    sw.Stop();
+                    elapsedTime = +sw.Elapsed;
+                    sw.Reset();
                 }
                 Console.WriteLine("Se ha terminado la eliminacion.");
-                sw.Stop();
-                elapsedTime = sw.Elapsed;
+                Time = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                              elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds,
+                              elapsedTime.Milliseconds / registros.Count());
                 sw.Reset();
-                Console.WriteLine("Time " + elapsedTime + "\n");
-                
-
+                Console.WriteLine("Time " + Time + "\n");
+                registros = new List<Guid>();
             }
 
           
