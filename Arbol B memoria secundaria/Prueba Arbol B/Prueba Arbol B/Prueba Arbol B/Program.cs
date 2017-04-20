@@ -19,8 +19,13 @@ namespace Prueba_Arbol_B
             int orden;
             TimeSpan elapsedTime;
             Console.WriteLine("Se empezo la inserción.");
+            List<string> TimesI = new List<string>();
+            List<string> TimesB = new List<string>();
+            List<string> TimesE = new List<string>();
+            int gradoInicial = 5;
+            int gradoFinal = 13;
 
-            for (int j = 5; j< 13; j++)
+            for (int j = gradoInicial; j< gradoFinal; j++)
             {               
                 orden = j;
 
@@ -45,6 +50,7 @@ namespace Prueba_Arbol_B
                 elapsedTime = sw.Elapsed;
                 sw.Reset();
                 Console.WriteLine("Time: " + elapsedTime);
+                TimesI.Add(elapsedTime.ToString());
 
                 Console.WriteLine("Inicia busqueda");
                
@@ -62,7 +68,7 @@ namespace Prueba_Arbol_B
                 string Time = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
                 elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds,
                 elapsedTime.Milliseconds / registros.Count());
-              //  sw.Reset();
+                TimesB.Add(Time);
                 Console.WriteLine("Time " + Time);
 
                 Console.WriteLine("\nInicio Eliminacion");
@@ -86,12 +92,30 @@ namespace Prueba_Arbol_B
                               elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds,
                               elapsedTime.Milliseconds / registros.Count());
                 sw.Reset();
+                TimesE.Add(Time);
                 Console.WriteLine("Time " + Time + "\n");
                 registros = new List<Guid>();
             }
 
-          
+            Console.WriteLine("Ingrese el nombre del archivo CSV que desea: ");
+            string FileName = Console.ReadLine();
+            CrearCvs(TimesI, TimesB, TimesE, FileName, gradoInicial);
             Console.ReadKey();
+        }
+
+        private static void CrearCvs(List<string> timeI, List<string> timeb, List<string> timeE, string fileName, int gradoA)
+        {
+            int grado = gradoA;
+            String newLine = "";
+            //var varstream = File.CreateText(@"C:\Users\sebas\Desktop\BTree tests\" + fileName + ".csv");
+            var varstream = File.CreateText(@"C:\Users\sebas\Desktop\" + fileName + ".csv");
+            for (int i = 0; i < timeI.Count(); i++)
+            {
+                newLine = "Arbol grado" + grado +  ",Tiempo Incercion: " + timeI[i] + ",Timpo Busqueda :" + timeb[i] + ",Timpo Eliminacion :" + timeE[i];
+                varstream.WriteLine(newLine);
+                grado++;
+            }
+            varstream.Close();
         }
     }
 }
