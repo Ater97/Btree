@@ -50,7 +50,7 @@ namespace Prueba_Arbol_B
                 sw.Start();
                 arbol = new BTree<string, Guid>("ArbolB-" + orden.ToString() + ".btree", orden);
 
-                for (int i = 0; i < 100000; i++)
+                for (int i = 0; i < 1000000; i++)
                 {
                     guid = Guid.NewGuid();
                     arbol.Insertar(guid.ToString(), guid);
@@ -123,8 +123,8 @@ namespace Prueba_Arbol_B
         {
             int grado = gradoA;
             String newLine = "";
-            //var varstream = File.CreateText(@"C:\Users\sebas\Desktop\BTree tests\" + fileName + ".csv");
-            var varstream = File.CreateText(@"C:\Users\sebas\Desktop\" + fileName + ".csv");
+            var varstream = File.CreateText(@"C:\Users\sebas\Desktop\BTree tests\" + fileName + ".csv");
+           // var varstream = File.CreateText(@"C:\Users\sebas\Desktop\" + fileName + ".csv");
             for (int i = 0; i < timeI.Count(); i++)
             {
                 newLine = "Arbol grado" + grado +  ",Tiempo Incercion: " + timeI[i] + ",Timpo Busqueda :" + timeb[i] + ",Timpo Eliminacion :" + timeE[i];

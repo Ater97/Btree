@@ -42,9 +42,9 @@ namespace Prueba_Arbol_B
         /// </summary>
         public void crearFolder()
         {
-            // direccion = @"C:\Users\sebas\Desktop\BTree tests\";
+            direccion = @"C:\Users\sebas\Desktop\BTree tests\";
             // direccion = @"C:\Users\bryan\Desktop\BTree tests\";
-            direccion = @"Archivo\";
+           // direccion = @"Archivo\";
             Directory.CreateDirectory(direccion);
             direccion = Path.Combine(direccion, nombreArchivo);
         }
