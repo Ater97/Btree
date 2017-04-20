@@ -41,7 +41,7 @@ namespace Prueba_Arbol_B
                     flag = true;
                 }
             }
-            for (int j = gradoInicial; j< gradoFinal; j++)
+            for (int j = gradoInicial; j <= gradoFinal; j++)
             {               
                 orden = j;
 
